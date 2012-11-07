@@ -20,6 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".QuestLoaderActivity"
+            android:label="@string/title_activity_quest_loader" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="vub.ngui.realquest.MainActivity" />
+        </activity>
+
         <activity
             android:name=".CreditsActivity"
             android:label="@string/title_activity_credits" >
@@ -41,6 +50,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
+
     </application>
 
 </manifest>
