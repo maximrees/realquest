@@ -1,16 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="textfield"
+    <Button
+        android:id="@+id/startContinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="@dimen/padding_medium"
-        android:text="@string/hello_world"
-        tools:context=".MainActivity" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/button_startcontinue" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/quit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:text="Button" />
+
+</LinearLayout>
