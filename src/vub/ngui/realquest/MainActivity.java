@@ -2,25 +2,17 @@ package vub.ngui.realquest;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
-import android.support.v4.app.NavUtils;
+import android.view.View;
 
 public class MainActivity extends Activity {
-	
-	
-
-
-    private Button startContinue;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startContinue = (Button) findViewById(R.id.startContinue);
-    }
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,5 +20,27 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    public void startQuest(View v) {
+        // Intent intent = new Intent(MainActivity.this, Activity.class);
+        // startActivity(intent);
+    }
     
+    public void startScores(View v) {
+        Intent intent = new Intent(MainActivity.this, ScoresActivity.class);
+        startActivity(intent);
+    }
+    
+    public void startSettings(View v) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+    
+    public void startCredits(View v) {
+        Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
+        startActivity(intent);
+    }
+    
+    public void quitMain(View v) {
+        MainActivity.this.finish();
+    }
 }
