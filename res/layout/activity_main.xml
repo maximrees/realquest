@@ -11,15 +11,26 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_large"
         android:layout_marginTop="@dimen/padding_small"
-        android:text="@string/button_startcontinue" />
-
+        android:text="@string/button_startcontinue"
+        android:onClick="startQuest" />
+    
     <Button
-        android:id="@+id/options"
+        android:id="@+id/scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_large"
-        android:text="Button" />
+        android:text="@string/button_scores"
+        android:onClick="startScores" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:text="@string/button_settings"
+        android:onClick="startSettings" />
 
     <Button
         android:id="@+id/credits"
@@ -27,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_large"
-        android:text="Button" />
+        android:text="@string/button_credits" 
+        android:onClick="startCredits"/>
 
     <Button
         android:id="@+id/quit"
@@ -35,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_large"
-        android:text="Button" />
+        android:text="@string/button_quit" 
+        android:onClick="quitMain"/>
 
 </LinearLayout>
