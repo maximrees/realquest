@@ -1,5 +1,16 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="RealQuestTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+		<item name="android:textSize">12sp</item>
+		<!-- <item name="android:textColor">@color/default_text_color</item> -->
+		<item name="android:typeface">monospace</item>
+		<!-- <item name="android:background">@color/default_background_color</item> -->
+		<item name="android:buttonStyle">@style/RQButton</item>
+	</style>
+	
+    <style name="RQButton" parent="android:style/Widget.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/dark_green</item>
+    </style>
 
 </resources>
