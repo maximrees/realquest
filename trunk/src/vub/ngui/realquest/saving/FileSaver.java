@@ -17,7 +17,7 @@ import android.widget.Toast;;
 
 public class FileSaver {
 	
-	final static String path = "data/vub.ngui.realquest/questfiles";
+	final static String questPath = "/quests";
 	
 	private File directory;
 
@@ -29,7 +29,12 @@ public class FileSaver {
 	
 	
 	public FileSaver(Context context){
-		directory = context.getExternalFilesDir(path);
+		//note: figured id follow the documentation and use context.getexternalfiledir, this didnt work because i had not requested the permission
+		//to get acces to the sd card in the manifest and let me to believe this was a bug (specified in the following links)
+		//https://groups.google.com/forum/?fromgroups=#!topic/android-developers/to1AsfE-Et8 http://forums.pragprog.com/forums/152/topics/5018
+		//note2: this will place our files in a private application directory (no other applications share it) which will be deleted upon uninstall
+		//note3: certain files will have their own directory
+		directory = context.getExternalFilesDir(questPath);
 		gson = new Gson();
 		
 	}
@@ -40,7 +45,7 @@ public class FileSaver {
 			try {
 				//write converted json data to a file named "file.json"
 				String datastring = gson.toJson(data);
-				FileWriter writer = new FileWriter(directory+data.toString());
+				FileWriter writer = new FileWriter(directory+ "/"+data.toString());
 				writer.write(datastring);
 				writer.close();
 		 

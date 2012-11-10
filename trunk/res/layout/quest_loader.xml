@@ -1,12 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="top" >
 
-    <ListView
-        android:id="@+id/questListView"
+    <ExpandableListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/startQuest" 
+        android:layout_centerInParent="true">
+
+    </ExpandableListView>
+
+    <Button
+        android:id="@+id/startQuest"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:enabled="false"
+        android:text="@string/button_start_selected_quest" />
 
 </RelativeLayout>
