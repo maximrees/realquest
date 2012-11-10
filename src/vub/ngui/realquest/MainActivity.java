@@ -21,8 +21,8 @@ public class MainActivity extends Activity {
     }
 
     public void startQuest(View v) {
-        // Intent intent = new Intent(MainActivity.this, Activity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, QuestLoaderActivity.class);
+        startActivity(intent);
     }
     
     public void startScores(View v) {
