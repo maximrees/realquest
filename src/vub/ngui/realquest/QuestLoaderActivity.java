@@ -51,7 +51,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
         //how to make mock files:
-        //saver.Save(new Quest("realquesttitleFOUR", "realquestdescriptionFOUR"));
+        //saver.Save(new Quest("realquesttitleDUMB", "realquestdescriptionDUMB"));
         File[] files = saver.loadFileNames();
         if( files.length == 0 ){
         	//some action to obtain files online

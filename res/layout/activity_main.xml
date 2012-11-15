@@ -4,13 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/realquest_logo"
+        android:layout_marginTop="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_extra_large" />
+
     <Button
         android:id="@+id/startContinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/padding_large"
-        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginBottom="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding_large"
         android:text="@string/button_startcontinue"
         android:onClick="startQuest" />
     
@@ -19,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_scores"
         android:onClick="startScores" />
 
@@ -28,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_settings"
         android:onClick="startSettings" />
 
@@ -37,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_credits" 
         android:onClick="startCredits"/>
 
@@ -46,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_quit" 
         android:onClick="quitMain"/>
 
