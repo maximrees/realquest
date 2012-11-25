@@ -6,12 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.android.maps.GeoPoint;
+
+import vub.ngui.realquest.model.Diversion;
+import vub.ngui.realquest.model.MiniGame;
+import vub.ngui.realquest.model.MultipleChoice;
 import vub.ngui.realquest.model.Quest;
 import vub.ngui.realquest.saving.FileSaver;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,8 +56,9 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest = (Button) findViewById(R.id.startQuest);
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
-        //how to make mock files:
-        //saver.Save(new Quest("realquesttitleDUMB", "realquestdescriptionDUMB"));
+       
+        //makeMockFile();
+        
         File[] files = saver.loadFileNames();
         if( files.length == 0 ){
         	//some action to obtain files online
@@ -86,7 +93,23 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 		
     }
 
-    @Override
+    private void makeMockFile() {
+    //how to make mock files:
+    		//minigame multiple choice:
+    			//questions and their diversion:
+    			Map<String, Diversion> map = new HashMap<String, Diversion>();
+    			map.put("What is your Quest ?", new Diversion(new GeoPoint(50256874, 4054658), 20));
+    		MultipleChoice mini1 = new MultipleChoice(new GeoPoint(50456874, 4084658), map);
+    	//put games in arraylist
+    	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
+    	listofgames.add(mini1);
+    	//put arraylist in quest        
+    	Quest quest = new Quest("realquesttitleDUMB", "realquestdescriptionDUMB", listofgames );
+    	//save it
+    	saver.Save(quest);		
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.quest_loader, menu);
         return true;
@@ -122,7 +145,9 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 			//food for thought: if quests get unusually big, we might not wanna load save all of them, might wanna save title and description and only load a full quest when we need it
 			String string = (String) ((HashMap) questAdapter.getGroup(state)).get(TITLE);
 			Quest quest = questContainer.get(string);
-			//TODO:launch intent with quest data to start the quest
+			//TODO:close this activity, remember teh quest and load the quest activity from the main menu, not from here (we want backpress from map to go to main menu, not this activity and we want to relaunch this activity then from mian menu if necessary/desireable)
+			Intent intent = new Intent(QuestLoaderActivity.this, MapQuestActivity.class);
+		    startActivity(intent);
 		}
 	};
 	
