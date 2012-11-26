@@ -1,18 +1,24 @@
 package vub.ngui.realquest.model;
 
+import java.io.Serializable;
+
 import com.google.android.maps.GeoPoint;
 
-public class Diversion {
-	private GeoPoint toPoint;
-	public Diversion(GeoPoint toPoint, long time) {
+public class Diversion implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 408121011241156933L;
+	private Location toPoint;
+	public Diversion(Location toPoint, long time) {
 		super();
 		this.toPoint = toPoint;
 		this.time = time;
 	}
-	public GeoPoint getToPoint() {
+	public Location getToPoint() {
 		return toPoint;
 	}
-	public void setToPoint(GeoPoint toPoint) {
+	public void setToPoint(Location toPoint) {
 		this.toPoint = toPoint;
 	}
 	public long getTime() {

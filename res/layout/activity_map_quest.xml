@@ -4,9 +4,9 @@
     android:layout_height="match_parent" >
 
     <com.google.android.maps.MapView
-           android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:apiKey="02ceIhigtDq-oo4lmC6bpCCmvZzQA_0w63lrGFQ"
-                 />
+        android:id="@+id/questMap"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:apiKey="02ceIhigtDq-2k0rKhzLlKZxe-1Hol-4O_rDXdA" />
 
 </RelativeLayout>
