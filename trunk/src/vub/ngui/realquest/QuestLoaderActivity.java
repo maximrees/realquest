@@ -8,7 +8,12 @@ import java.util.Map;
 
 import com.google.android.maps.GeoPoint;
 
+import vub.ngui.realquest.R;
+import vub.ngui.realquest.R.id;
+import vub.ngui.realquest.R.layout;
+import vub.ngui.realquest.R.menu;
 import vub.ngui.realquest.model.Diversion;
+import vub.ngui.realquest.model.Location;
 import vub.ngui.realquest.model.MiniGame;
 import vub.ngui.realquest.model.MultipleChoice;
 import vub.ngui.realquest.model.Quest;
@@ -57,14 +62,21 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
        
-        //makeMockFile();
+        makeMockFile();
         
+        
+        LoadQuestFiles();
+        
+		
+    }
+
+    private void LoadQuestFiles() {
         File[] files = saver.loadFileNames();
         if( files.length == 0 ){
         	//some action to obtain files online
         	//a warning to the user that he has no current quest file
         } else{
-        	//TODO: put this in a function
+        	
         	List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
  	        List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
         	for( File file : files){        		
@@ -89,22 +101,23 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         	setListAdapter(questAdapter);	
 
         }
-        
 		
-    }
+	}
 
-    private void makeMockFile() {
+	private void makeMockFile() {
     //how to make mock files:
     		//minigame multiple choice:
     			//questions and their diversion:
     			Map<String, Diversion> map = new HashMap<String, Diversion>();
-    			map.put("What is your Quest ?", new Diversion(new GeoPoint(50256874, 4054658), 20));
-    		MultipleChoice mini1 = new MultipleChoice(new GeoPoint(50456874, 4084658), map);
+    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(new Location(50234342, 4054658), 20));
+    			map.put("to find the holy grail", new Diversion(new Location(50238942, 4154658), 20));
+    			map.put("ffffffffffffff", new Diversion(new Location(50238942, 4154658), 20));
+    		MultipleChoice mini1 = new MultipleChoice(new Location(50342543, 4345348), "what is your quest", map );
     	//put games in arraylist
     	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
     	listofgames.add(mini1);
     	//put arraylist in quest        
-    	Quest quest = new Quest("realquesttitleDUMB", "realquestdescriptionDUMB", listofgames );
+    	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames );
     	//save it
     	saver.Save(quest);		
 	}
@@ -147,6 +160,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 			Quest quest = questContainer.get(string);
 			//TODO:close this activity, remember teh quest and load the quest activity from the main menu, not from here (we want backpress from map to go to main menu, not this activity and we want to relaunch this activity then from mian menu if necessary/desireable)
 			Intent intent = new Intent(QuestLoaderActivity.this, MapQuestActivity.class);
+			intent.putExtra("Quest", quest);
 		    startActivity(intent);
 		}
 	};

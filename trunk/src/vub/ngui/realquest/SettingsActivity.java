@@ -1,5 +1,8 @@
 package vub.ngui.realquest;
 
+import vub.ngui.realquest.R;
+import vub.ngui.realquest.R.layout;
+import vub.ngui.realquest.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

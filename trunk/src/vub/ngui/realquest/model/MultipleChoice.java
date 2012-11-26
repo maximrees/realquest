@@ -1,25 +1,35 @@
 package vub.ngui.realquest.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.android.maps.GeoPoint;
 
-public class MultipleChoice extends MiniGame {
+public class MultipleChoice extends MiniGame implements Serializable {
 	
-	private Map<String, Diversion>  questions = new HashMap<String, Diversion>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3283280322827700376L;
+	private String question;
+	private Map<String, Diversion>  answers = new HashMap<String, Diversion>();
 
-	public MultipleChoice(GeoPoint location, Map<String, Diversion> questions) {
-		super(location);
-		this.questions = questions;
+	public MultipleChoice(Location location, String question, Map<String, Diversion> answers) {
+		super(location, new ArrayList<Diversion>());
+		this.question = question;
+		ArrayList<Diversion> diversions = new ArrayList<Diversion>(answers.values());
+		super.setFailureRoutes(diversions);
+		this.answers = answers;
 	}
 
-	public Map<String, Diversion> getQuestions() {
-		return questions;
+	public Map<String, Diversion> getAnswers() {
+		return answers;
 	}
 
-	public void setQuestions(Map<String, Diversion> questions) {
-		this.questions = questions;
+	public void setQuestions(Map<String, Diversion> answers) {
+		this.answers = answers;
 	}
 
 
