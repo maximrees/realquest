@@ -2,11 +2,8 @@
     package="vub.ngui.realquest"
     android:versionCode="1"
     android:versionName="1.0" >
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
@@ -16,10 +13,10 @@
         android:label="@string/app_name"
         android:theme="@style/RealQuestTheme" >
         <uses-library android:name="com.google.android.maps" />
-
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,12 +52,19 @@
                 android:value="MainActivity" />
         </activity>
         <activity
+            android:name=".ProximityGaugeActivity"
+            android:label="@string/title_activity_proximity_gauge"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="vub.ngui.realquest.MainActivity" />
+        </activity>
+        <activity
             android:name=".MapQuestActivity"
             android:label="@string/title_activity_map_quest"   
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
