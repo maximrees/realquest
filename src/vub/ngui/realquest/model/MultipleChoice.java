@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.location.Location;
+
 import com.google.android.maps.GeoPoint;
 
 public class MultipleChoice extends MiniGame implements Serializable {
@@ -16,8 +18,8 @@ public class MultipleChoice extends MiniGame implements Serializable {
 	private String question;
 	private Map<String, Diversion>  answers = new HashMap<String, Diversion>();
 
-	public MultipleChoice(Location location, String question, Map<String, Diversion> answers) {
-		super(location, new ArrayList<Diversion>());
+	public MultipleChoice(Location point, String question, Map<String, Diversion> answers) {
+		super(point, new ArrayList<Diversion>());
 		this.question = question;
 		ArrayList<Diversion> diversions = new ArrayList<Diversion>(answers.values());
 		super.setFailureRoutes(diversions);
