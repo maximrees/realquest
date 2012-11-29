@@ -8,18 +8,18 @@ import java.util.Map;
 
 import com.google.android.maps.GeoPoint;
 
-import vub.ngui.realquest.R;
-import vub.ngui.realquest.R.id;
-import vub.ngui.realquest.R.layout;
-import vub.ngui.realquest.R.menu;
+
 import vub.ngui.realquest.model.Diversion;
-import vub.ngui.realquest.model.Location;
+
 import vub.ngui.realquest.model.MiniGame;
 import vub.ngui.realquest.model.MultipleChoice;
+
 import vub.ngui.realquest.model.Quest;
 import vub.ngui.realquest.saving.FileSaver;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
@@ -44,6 +44,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 	//not sure if hell remember this might be a problem
 	private int state = 0;
 	private Map<String, Quest> questContainer = new HashMap<String,Quest>();
+	
+
 	
 	
 	 private static final String TITLE = "TITLE";
@@ -109,10 +111,19 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     		//minigame multiple choice:
     			//questions and their diversion:
     			Map<String, Diversion> map = new HashMap<String, Diversion>();
-    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(new Location(50234342, 4054658), 20));
-    			map.put("to find the holy grail", new Diversion(new Location(50238942, 4154658), 20));
-    			map.put("ffffffffffffff", new Diversion(new Location(50238942, 4154658), 20));
-    		MultipleChoice mini1 = new MultipleChoice(new Location(50342543, 4345348), "what is your quest", map );
+    			Location loc = new Location(LocationManager.GPS_PROVIDER);
+    			loc.setLatitude(10.154929);
+    			loc.setLongitude(76.390316);
+    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 20));
+    			loc.setLatitude(10.154929);
+    			loc.setLongitude(76.390316);
+    			map.put("to find the holy grail", new Diversion(loc, 20));
+    			loc.setLatitude(10.154929);
+    			loc.setLongitude(76.390316);
+    			map.put("ffffffffffffff", new Diversion(loc, 20));
+    		loc.setLatitude(10.154999);
+    		loc.setLongitude( 76.341867);
+    		MultipleChoice mini1 = new MultipleChoice(loc, "what is your quest", map );
     	//put games in arraylist
     	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
     	listofgames.add(mini1);
@@ -157,10 +168,10 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 		public void onClick(View v) {			
 			//food for thought: if quests get unusually big, we might not wanna load save all of them, might wanna save title and description and only load a full quest when we need it
 			String string = (String) ((HashMap) questAdapter.getGroup(state)).get(TITLE);
-			Quest quest = questContainer.get(string);
+			MainActivity.getInstance().quest = questContainer.get(string);
 			//TODO:close this activity, remember teh quest and load the quest activity from the main menu, not from here (we want backpress from map to go to main menu, not this activity and we want to relaunch this activity then from mian menu if necessary/desireable)
 			Intent intent = new Intent(QuestLoaderActivity.this, MapQuestActivity.class);
-			intent.putExtra("Quest", quest);
+			
 		    startActivity(intent);
 		}
 	};

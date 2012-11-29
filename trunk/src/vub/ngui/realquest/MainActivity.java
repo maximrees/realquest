@@ -3,6 +3,7 @@ package vub.ngui.realquest;
 import vub.ngui.realquest.R;
 import vub.ngui.realquest.R.layout;
 import vub.ngui.realquest.R.menu;
+import vub.ngui.realquest.model.Quest;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +13,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
+	
+	public Quest quest;
+	private static MainActivity instance = null;
+	
+	public static MainActivity getInstance(){
+		if( instance == null) return new MainActivity();
+		else return instance;
+	}
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +30,7 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_main);
+        instance = this;
 	}
 
     @Override

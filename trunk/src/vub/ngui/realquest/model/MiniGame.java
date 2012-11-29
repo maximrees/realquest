@@ -3,6 +3,7 @@ package vub.ngui.realquest.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,13 +14,13 @@ public class MiniGame implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6922685170538864737L;
-	private Location location;
+	private Location point;
 	private ArrayList<Diversion> failureRoutes = new ArrayList<Diversion>();
 	public Location getLocation() {
-		return location;
+		return point;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setLocation(Location point) {
+		this.point = point;
 	}
 	public ArrayList<Diversion> getFailureRoutes() {
 		return failureRoutes;
@@ -27,9 +28,9 @@ public class MiniGame implements Serializable {
 	public void setFailureRoutes(ArrayList<Diversion> failureRoutes) {
 		this.failureRoutes = failureRoutes;
 	}
-	public MiniGame(Location location, ArrayList<Diversion> fail) {
+	public MiniGame(Location point, ArrayList<Diversion> fail) {
 		super();
-		this.location = location;
+		this.point = point;
 		this.failureRoutes = fail;
 	}
 	

@@ -2,6 +2,8 @@ package vub.ngui.realquest.model;
 
 import java.io.Serializable;
 
+import android.location.Location;
+
 import com.google.android.maps.GeoPoint;
 
 public class Diversion implements Serializable {
