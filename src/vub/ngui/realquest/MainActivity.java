@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     }
     
     public void startScores(View v) {
-        Intent intent = new Intent(MainActivity.this, ScoresActivity.class);
+        Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
         startActivity(intent);
     }
     

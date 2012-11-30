@@ -115,9 +115,10 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
     			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 20));
+    			//the correct answer contains the next minigame location as location and zero as timeout;
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
-    			map.put("to find the holy grail", new Diversion(loc, 20));
+    			map.put("to find the holy grail", new Diversion(loc, 0));
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
     			map.put("ffffffffffffff", new Diversion(loc, 20));

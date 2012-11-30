@@ -3,13 +3,18 @@ package vub.ngui.realquest.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.maps.GeoPoint;
 
-public class MiniGame implements Serializable {
+public abstract class MiniGame implements Serializable {
 	/**
 	 * 
 	 */
@@ -33,6 +38,11 @@ public class MiniGame implements Serializable {
 		this.point = point;
 		this.failureRoutes = fail;
 	}
+	//IMPORTANT NOTE:
+	//i would like to make this method abstract because i want minigames to implement loading their own elements into the minigame layout
+	//alas making this abstract would mess with gson and id have to make modifications in the saver to account for this abstract class
+	//so im justn ot gunna do that and write this here that u need to enforce this overriding method in subclasses	
+	abstract public void launchMinigame(Activity minigameActivity, ViewGroup view);
 	
 	
 //	public MiniGame(Parcel in) {

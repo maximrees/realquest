@@ -7,9 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
+import vub.ngui.realquest.model.MiniGame;
+import vub.ngui.realquest.model.MultipleChoice;
 import vub.ngui.realquest.model.Quest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import android.content.Context;
 import android.os.Environment;
@@ -35,7 +38,9 @@ public class FileSaver {
 		//note2: this will place our files in a private application directory (no other applications share it) which will be deleted upon uninstall
 		//note3: certain files will have their own directory
 		directory = context.getExternalFilesDir(questPath);
-		gson = new Gson();
+		GsonBuilder gsonBilder = new GsonBuilder();
+		gsonBilder.registerTypeAdapter(MiniGame.class, new MiniGameAdapter());
+		gson = gsonBilder.create();
 		
 	}
 	
