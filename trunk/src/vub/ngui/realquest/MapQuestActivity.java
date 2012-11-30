@@ -52,6 +52,7 @@ import android.content.Context;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 
@@ -65,7 +66,6 @@ public class MapQuestActivity extends MapActivity {
 	private LocationListener loclis = null;
 	private MiniGamesItemizedOverlay itemizedoverlay;
 	private MyLocationOverlay myLocationOverlay;
-	private boolean flag = false;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +85,9 @@ public class MapQuestActivity extends MapActivity {
 		setupLocationManaging();
 		
 		//following things need to happen:
-		//generate the user' location (this needs to happen by registering to the incoming location update events)
-		//and an arrow or a route needs to be generated to the next minigame location.
-		//incoming location events check if close to current minigame
+		//generate the user' location (this needs to happen by registering to the incoming location update events) DONE
+		//and an arrow or a route needs to be generated to the next minigame location. DONE
+		//incoming location events check if close to current minigame NOT LOC EVENT BUT PROX INTENT DONE
 		
 		//load yves proximity activity (with minigame data, ...) launch the minigame from there
 		//upon succes load the actual minigameactivity
@@ -98,10 +98,11 @@ public class MapQuestActivity extends MapActivity {
 		
 		//if it is answered correctly then we will remove the minigame from teh quest and load the next one (however the hasmap implementation allows us)
 		//fi there are no more minigames then weve played out the game and need to load scores
-		flag = false;
+
 		
 		drawQuestToMap();// !!!
-		drawPathToMap(10.504956, 76.390316, 10.154929, 76.390376);
+		//testing
+		//drawPathToMap(10.504956, 76.390316, 10.154929, 76.390376);
 
 		
 }
@@ -112,28 +113,34 @@ public class MapQuestActivity extends MapActivity {
 			locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 			// Define a listener that responds to location updates
+			// I'm only using this one so as to wait for a starting point from which to draw a path to the next minigame
+			// it would be more logical to do this in the oncreate but you need a starting point so ...
 			loclis = new LocationListener() {
 
 			    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
 			    public void onProviderEnabled(String provider) {}
 
-			    public void onProviderDisabled(String provider) {}
+			    public void onProviderDisabled(String provider) {
+			    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.provider_disabled), Toast.LENGTH_LONG).show();			    	
+			    }
 
 				public void onLocationChanged(android.location.Location location) {
-					if(!flag){
-						MiniGame game = quest.getMiniGameInfo().get(0);
+					
+						MiniGame game = (MiniGame) quest.getMiniGameInfo().get(0);
 						Location dest = game.getLocation();
 						Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 						drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
-					}
-					
-					
+						locman.removeUpdates(loclis);
+									
 				}
 			  };
 
 			// Register the listener with the Location Manager to receive location updates
 			locman.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclis);
+			//DEES WAS MIJN PLAN VOOR UW INTENT TE LAUNCHEN :p > als ge echt nen thread moet launchen dan zijt ge miss beter dat ge het custom doet in onlocationchanged
+			//maar dan moet ge wel terug ne flag zetten voor mijn code in onlocation changed and the removeupdates lijn verwijderen. want die code mag maar 1 keer runnen.
+			//locman.addProximityAlert(quest.getMiniGameInfo().get(0).getLocation().getLatitude(), quest.getMiniGameInfo().get(0).getLocation().getLatitude(), 100, -1, intent)
 		}
 		
 	}
@@ -312,7 +319,7 @@ public class MapQuestActivity extends MapActivity {
 	}
 	
 	private void drawMinigameToMap(){		
-		Location loc = quest.getMiniGameInfo().get(0).getLocation();
+		Location loc = ((MiniGame) quest.getMiniGameInfo().get(0)).getLocation();
 		int latitude = (int) (loc.getLatitude() * 1E6);
 		int longitude =  (int) (loc.getLongitude() * 1E6);
 		GeoPoint point = new GeoPoint(latitude, longitude);

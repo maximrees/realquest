@@ -14,7 +14,7 @@ public class Quest implements Serializable{
 	private static final long serialVersionUID = 4237081863152163539L;
 	private String title;
 	private String description;
-	private ArrayList<MiniGame> miniGameInfo = new ArrayList<MiniGame>(); 
+	private ArrayList<MiniGame> miniGameInfo; 
 
 	public Quest(String title, String description) {
 		super();

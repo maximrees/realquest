@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">RealQuest</string>
@@ -18,5 +19,8 @@
     <string name="title_activity_proximity_gauge">Quest Name</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_map_quest">MapQuestActivity</string>
+    <string name="provider_disabled">&quot;enable GPS and wait for a valid signal please&quot;</string>
+    <string name="title_activity_mini_game">MiniGameActivity</string>
+    <string name="button_solve_multiple_choice">Answer the question.</string>
 
 </resources>
