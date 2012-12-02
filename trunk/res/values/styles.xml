@@ -10,8 +10,6 @@
     <style name="btn_default_realquest" parent="android:style/Widget.Holo.Light.Button">
         <item name="android:background">@drawable/btn_default_realquest</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:minWidth">230dip</item>
-        <item name="android:minHeight">44dip</item>
         <!-- <item name="android:textColor">@color/dark_green</item> -->
     </style>
     

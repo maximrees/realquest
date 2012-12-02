@@ -21,7 +21,9 @@
         android:layout_marginBottom="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_large"
         android:text="@string/button_startcontinue"
-        android:onClick="startQuest" />
+        android:onClick="startQuest"
+        android:minHeight="44dip"
+        android:minWidth="230dip" />
     
     <Button
         android:id="@+id/scores"
@@ -30,7 +32,9 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_scores"
-        android:onClick="startScores" />
+        android:onClick="startScores"
+        android:minHeight="44dip"
+        android:minWidth="230dip" />
 
     <Button
         android:id="@+id/settings"
@@ -39,7 +43,9 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_settings"
-        android:onClick="startSettings" />
+        android:onClick="startSettings"
+        android:minHeight="44dip"
+        android:minWidth="230dip" />
 
     <Button
         android:id="@+id/credits"
@@ -48,7 +54,9 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_credits" 
-        android:onClick="startCredits"/>
+        android:onClick="startCredits"
+        android:minHeight="44dip"
+        android:minWidth="230dip" />
 
     <Button
         android:id="@+id/quit"
@@ -57,6 +65,8 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/padding_small"
         android:text="@string/button_quit" 
-        android:onClick="quitMain"/>
+        android:onClick="quitMain"
+        android:minHeight="44dip"
+        android:minWidth="230dip" />
 
 </LinearLayout>
