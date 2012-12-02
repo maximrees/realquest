@@ -90,29 +90,29 @@ public class ProximityGaugeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-//	// testing the workings of the bars and button
-//	@Override
-//	public boolean onTouchEvent(MotionEvent event) {	    
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//        	if (test) {
-//	        	if (current_proximity == 10) {
-//	        		current_proximity--;
-//	        		test = false;
-//	        	} else {
-//	        		current_proximity++;
-//	        	}
-//        	} else {
-//        		if (current_proximity == 0) {
-//        			current_proximity++;
-//        			test = true;
-//        		} else {
-//        			current_proximity--;
-//        		}
-//        	}
-//        	update(current_proximity);
-//        }
-//        return true;
-//	}
+	// testing the workings of the bars and button
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {	    
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        	if (test) {
+	        	if (current_proximity == 10) {
+	        		current_proximity--;
+	        		test = false;
+	        	} else {
+	        		current_proximity++;
+	        	}
+        	} else {
+        		if (current_proximity == 0) {
+        			current_proximity++;
+        			test = true;
+        		} else {
+        			current_proximity--;
+        		}
+        	}
+        	update(current_proximity);
+        }
+        return true;
+	}
 	
 	private void update(int x) {
 			pgButton.setEnabled(pg.updateGauge(x));
