@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -24,10 +23,8 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	private int[] gaugeImages_disabled;
 	private int[] gaugeSounds;
 	private SoundPool _soundPool;
-	
-	// variables for testing
-	private int current_proximity = 3;
-	private boolean test = true;
+	private int _preferredHeight = 484;
+	private int _preferredWidth = 347;
 
 	public ProximityGauge(Context context) {
 		super(context);
@@ -80,20 +77,6 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		for (int i = 0; i < gauge.length; i++) {		
 			drawIMG(canvas, gauge[i], px - gauge[i].getWidth() / 2, py - gauge[i].getHeight() / 2);
 		}
-		
-		// draw text using FILL style
-		paint.setStyle(Paint.Style.FILL);
-		// color is set initerateParts()
-		//turn antialiasing on
-		paint.setAntiAlias(true);
-		paint.setTextSize(scale * 22);
-		
-		String displayText= "Enter";
-		Float textWidth = paint.measureText(displayText);
-		canvas.drawText(displayText, px - textWidth / 2, (float) (py + (gauge[0].getHeight() / 2.8)), paint);
-		displayText= "MiniGame";
-		textWidth = paint.measureText(displayText);
-		canvas.drawText(displayText, px - textWidth / 2, py + (float) ((gauge[0].getHeight() / 2.8) + (scale * 22)), paint);
 	}
 
 	@Override
@@ -132,11 +115,11 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	}
 	
 	private int getPreferredHeight() {
-		return 484;
+		return _preferredHeight;
 	}
 	
 	private int getPreferredWidth() {
-		return 347;
+		return _preferredWidth;
 	}
 	
 	private void init() {
@@ -165,7 +148,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	}
 	
 	private void initDrawingTools() {
-		gaugeImages_disabled = new int[11];
+		gaugeImages_disabled = new int[10];
 		gaugeImages_disabled[0] = R.drawable.bar_01_disabled;
 		gaugeImages_disabled[1] = R.drawable.bar_02_disabled;
 		gaugeImages_disabled[2] = R.drawable.bar_03_disabled;
@@ -176,9 +159,8 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		gaugeImages_disabled[7] = R.drawable.bar_08_disabled;
 		gaugeImages_disabled[8] = R.drawable.bar_09_disabled;
 		gaugeImages_disabled[9] = R.drawable.bar_10_disabled;
-		gaugeImages_disabled[10] = R.drawable.btn_disabled;
 		
-		gaugeImages_enabled = new int[11];
+		gaugeImages_enabled = new int[10];
 		gaugeImages_enabled[0] = R.drawable.bar_01_enabled;
 		gaugeImages_enabled[1] = R.drawable.bar_02_enabled;
 		gaugeImages_enabled[2] = R.drawable.bar_03_enabled;
@@ -189,10 +171,9 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		gaugeImages_enabled[7] = R.drawable.bar_08_enabled;
 		gaugeImages_enabled[8] = R.drawable.bar_09_enabled;
 		gaugeImages_enabled[9] = R.drawable.bar_10_enabled;
-		gaugeImages_enabled[10] = R.drawable.btn_enabled;
 		
-		gauge = new Bitmap[11];
-		// initialy gauge is set to 3
+		gauge = new Bitmap[10];
+		// Initially gauge is set to 3
 		updateGauge(3);
 	}
 	
@@ -200,61 +181,32 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		canvas.drawBitmap(img, x, y, paint);
 	}
 	
-	// setting the correct amount of bars and/or dis- or enabling the button
-	public void updateGauge(int x) {
-		if (x < gauge.length) {
+	// setting the correct amount of bars
+	public boolean updateGauge(int x) {
+		if (x <= gauge.length) {
 			iterateParts(x);
 			playSound(x);
+		}
+		if (x == gauge.length) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	private void iterateParts(int x) {
-		for (int i = 0; i < gauge.length - 1; i++) { // length - 1 because last is the button
-			if (i < x) { // set enabled to x, else disabled
-				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[i]);
-			} else {
-				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
+		synchronized (_pgthread.getSurfaceHolder()) {
+			for (int i = 0; i < gauge.length; i++) {
+				if (i < x) { // set enabled to x, else disabled
+					gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[i]);
+				} else {
+					gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
+				}
 			}
-		}
-		
-		// set button enabled or disabled
-		// TODO: make real button
-		if (x == gauge.length-1) {
-			gauge[10] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[10]);
-			paint.setColor(Color.BLACK);
-		} else {
-			gauge[10] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[10]);
-			paint.setColor(Color.DKGRAY);
-		}
+	    }
 	}
 	
 	private void playSound(int x) {
 		_soundPool.play(gaugeSounds[x], 1, 1, 0, 0, 1);
-	}
-	
-	// testing the workings of the bars and button
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-	    synchronized (_pgthread.getSurfaceHolder()) {
-	        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	        	if (test) {
-		        	if (current_proximity == gauge.length - 1) {
-		        		current_proximity--;
-		        		test = false;
-		        	} else {
-		        		current_proximity++;
-		        	}
-	        	} else {
-	        		if (current_proximity == 0) {
-	        			current_proximity++;
-	        			test = true;
-	        		} else {
-	        			current_proximity--;
-	        		}
-	        	}
-	        	updateGauge(current_proximity);
-	        }
-	        return true;
-	    }
 	}
 }
