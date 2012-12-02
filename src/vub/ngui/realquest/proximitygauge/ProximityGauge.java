@@ -72,10 +72,14 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		int px = width / 2;
 		int py = height / 2;
 		
-		canvas.drawColor(Color.BLACK);
-		// draw the bars
-		for (int i = 0; i < gauge.length; i++) {		
-			drawIMG(canvas, gauge[i], px - gauge[i].getWidth() / 2, py - gauge[i].getHeight() / 2);
+		if (canvas != null) {
+			synchronized (_pgthread.getSurfaceHolder()) {
+				canvas.drawColor(Color.BLACK);
+				// draw the bars
+				for (int i = 0; i < gauge.length; i++) {		
+					drawIMG(canvas, gauge[i], px - gauge[i].getWidth() / 2, py - gauge[i].getHeight() / 2);
+				}
+		    }
 		}
 	}
 
@@ -195,15 +199,13 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	}
 	
 	private void iterateParts(int x) {
-		synchronized (_pgthread.getSurfaceHolder()) {
-			for (int i = 0; i < gauge.length; i++) {
-				if (i < x) { // set enabled to x, else disabled
-					gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[i]);
-				} else {
-					gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
-				}
+		for (int i = 0; i < gauge.length; i++) {
+			if (i < x) { // set enabled to x, else disabled
+				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[i]);
+			} else {
+				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
 			}
-	    }
+		}
 	}
 	
 	private void playSound(int x) {
