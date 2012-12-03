@@ -38,9 +38,9 @@ public class FileSaver {
 		//note2: this will place our files in a private application directory (no other applications share it) which will be deleted upon uninstall
 		//note3: certain files will have their own directory
 		directory = context.getExternalFilesDir(questPath);
-		GsonBuilder gsonBilder = new GsonBuilder();
-		gsonBilder.registerTypeAdapter(MiniGame.class, new MiniGameAdapter());
-		gson = gsonBilder.create();
+		//pipelining FTW
+		gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(MiniGame.class, new MiniGameAdapter()).create();
+
 		
 	}
 	
