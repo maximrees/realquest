@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
     }
     
     public void startCredits(View v) {
-        Intent intent = new Intent(MainActivity.this, ProximityGaugeActivity.class);
+        Intent intent = new Intent(MainActivity.this, EvaderActivity.class);
         startActivity(intent);
     }
     
