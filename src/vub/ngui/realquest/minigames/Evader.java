@@ -1,5 +1,7 @@
 package vub.ngui.realquest.minigames;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,6 +22,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class Evader extends SurfaceView implements SurfaceHolder.Callback,SensorEventListener  {
 
@@ -264,9 +267,12 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
         
         /**Variables for collision**/
         private boolean[] mCollidedCircles;
+        private int maxCollisions = 2;
+        private int collisions;
         
         /**Variables for winning**/
-        private boolean mTarget = false;
+        private int attempts = 1;
+//        private boolean mTarget = false;
         
 		public EvaderThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -278,6 +284,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
         }
 		
 		private void initialiseVariables(){
+			
 			mRedCirclesCentreX = new float[10];
 	        mRedCirclesCentreX[0] = mScreenCentreX * 2f / 2.5f;
 	        mRedCirclesCentreX[1] = mScreenCentreX * 2f / 1.1f;
@@ -302,32 +309,43 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 	        mRedCirclesCentreY[8] = mScreenCentreY * 2f / 1.26f;
 	        mRedCirclesCentreY[9] = mScreenCentreY * 2f / 5.1f;
 	        
+	        Random random = new Random();
 	        mRedCirclesRadii = new float[10];
-	        mRedCirclesRadii[0] = 15f * mScreenRatio;
-	        mRedCirclesRadii[1] = 16.5f * mScreenRatio;
-	        mRedCirclesRadii[2] = 16f * mScreenRatio;
-	        mRedCirclesRadii[3] = 26f * mScreenRatio;
-	        mRedCirclesRadii[4] = 12.1f * mScreenRatio;
-	        mRedCirclesRadii[5] = 5.5f * mScreenRatio;
-	        mRedCirclesRadii[6] = 12f * mScreenRatio;
-	        mRedCirclesRadii[7] = 25f * mScreenRatio;
-	        mRedCirclesRadii[8] = 10f * mScreenRatio;
-	        mRedCirclesRadii[9] = 8f * mScreenRatio;
+	        for (int i = 0; i < mRedCirclesRadii.length; i++) {
+				mRedCirclesRadii[i] = getRandomFloat(5.5f, 25f, random) * mScreenRatio;
+			}
+			
+//	        mRedCirclesRadii[0] = 15f * mScreenRatio;
+//	        mRedCirclesRadii[1] = 16.5f * mScreenRatio;
+//	        mRedCirclesRadii[2] = 16f * mScreenRatio;
+//	        mRedCirclesRadii[3] = 26f * mScreenRatio;
+//	        mRedCirclesRadii[4] = 12.1f * mScreenRatio;
+//	        mRedCirclesRadii[5] = 5.5f * mScreenRatio;
+//	        mRedCirclesRadii[6] = 12f * mScreenRatio;
+//	        mRedCirclesRadii[7] = 25f * mScreenRatio;
+//	        mRedCirclesRadii[8] = 10f * mScreenRatio;
+//	        mRedCirclesRadii[9] = 8f * mScreenRatio;
 	        
 	        mRedCirclesXVariation = new float[10];
-	        mRedCirclesXVariation[0] = -1f;
-	        mRedCirclesXVariation[1] = -1.5f;
-	        mRedCirclesXVariation[2] = -2f;
-	        mRedCirclesXVariation[3] = -3f;
-	        mRedCirclesXVariation[4] = -1f;
-	        mRedCirclesXVariation[5] = -2f;
-	        mRedCirclesXVariation[6] = -1.5f;
-	        mRedCirclesXVariation[7] = 2.5f;
-	        mRedCirclesXVariation[8] = -4f;
-	        mRedCirclesXVariation[9] = -1.1f;
+	        for (int i = 0; i < mRedCirclesXVariation.length; i++) {
+	        	mRedCirclesXVariation[i] = getRandomFloat(-10f, 10f, random);
+			}
+	        
+//	        mRedCirclesXVariation[0] = -1f;
+//	        mRedCirclesXVariation[1] = -1.5f;
+//	        mRedCirclesXVariation[2] = -2f;
+//	        mRedCirclesXVariation[3] = -3f;
+//	        mRedCirclesXVariation[4] = -1f;
+//	        mRedCirclesXVariation[5] = -2f;
+//	        mRedCirclesXVariation[6] = -1.5f;
+//	        mRedCirclesXVariation[7] = 2.5f;
+//	        mRedCirclesXVariation[8] = -4f;
+//	        mRedCirclesXVariation[9] = -1.1f;
 	        
 	        mCircleCentreX = mCircleRadius;
 	        mCircleCentreY = mCircleRadius;
+	        
+	        collisions = 0;
 	        
 	        mCollidedCircles = new boolean[10];
 	        mCollidedCircles[0] = false;
@@ -341,6 +359,18 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 	        mCollidedCircles[8] = false;
 	        mCollidedCircles[9] = false;
 	     }
+			
+		private float getRandomFloat(float aStart, float aEnd, Random aRandom){
+		    if ( aStart > aEnd ) {
+		      throw new IllegalArgumentException("Start cannot exceed End.");
+		    }
+		    //get the range, casting to long to avoid overflow problems
+		    long range = (long)aEnd - (long)aStart + 1;
+		    // compute a fraction of the range, 0 <= frac < range
+		    long fraction = (long)(range * aRandom.nextFloat());
+		    float randomNumber =  (float)(fraction + aStart);    
+		    return randomNumber;
+		  }
 		
 		@Override
         public void run() {
@@ -411,11 +441,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 		}
 		
 		private void drawTarget(){
-			if (mTarget){
-				mCanvas.drawRect(mScreenCentreX * 2 - mCircleRadius * 2, mScreenCentreY * 2 - mCircleRadius * 2, mScreenCentreX * 2, mScreenCentreY * 2, mPaintWhite);
-			} else {
-				mCanvas.drawRect(mScreenCentreX * 2 - mCircleRadius * 2, mScreenCentreY * 2 - mCircleRadius * 2, mScreenCentreX * 2, mScreenCentreY * 2, mPaintRed);
-			}
+			mCanvas.drawRect(mScreenCentreX * 2 - mCircleRadius * 2, mScreenCentreY * 2 - mCircleRadius * 2, mScreenCentreX * 2, mScreenCentreY * 2, mPaintWhite);
 		}
 		
 		/**The methods below are helper methods for drawing on the screen**/
@@ -466,16 +492,27 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 			while (i < length){
 				float centresDistanceSquared = (mCircleCentreX - mRedCirclesCentreX[i]) * (mCircleCentreX - mRedCirclesCentreX[i]) + (mCircleCentreY - mRedCirclesCentreY[i]) * (mCircleCentreY - mRedCirclesCentreY[i]);  
 				float radiiDistanceSquared = (mCircleRadius + mRedCirclesRadii[i]) * (mCircleRadius + mRedCirclesRadii[i]);
-				if (centresDistanceSquared <= radiiDistanceSquared){
+				if ((centresDistanceSquared <= radiiDistanceSquared) && !mCollidedCircles[i]){
 					mCollidedCircles[i] = true;
+					collisions++;
 				}
 				i += 1;
+			}
+			if (collisions >= maxCollisions) {
+				attempts++;
+				initialiseVariables();
+				mActivity.runOnUiThread(new Runnable() {
+				    public void run() {
+				        Toast.makeText(mActivity, "Attempt " + attempts, Toast.LENGTH_SHORT).show();
+				    }
+				});
 			}
 		}
 		
 		private void checkTarget(){
 			if (mCircleCentreX > mScreenCentreX * 2 - mCircleRadius * 2 && mCircleCentreY > mScreenCentreY * 2 - mCircleRadius * 2){
-				mTarget = true;
+				// TODO: enter result
+				mActivity.finish();
 			}
 		}
 		
