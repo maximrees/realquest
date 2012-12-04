@@ -69,15 +69,17 @@
             android:name="vub.ngui.realquest.MapQuestActivity"
             android:label="@string/title_activity_map_quest"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="vub.ngui.realquest.MiniGameActivity"
             android:label="@string/title_activity_mini_game" >
+        </activity>
+        <activity
+            android:name="vub.ngui.realquest.EvaderActivity"
+            android:label="@string/title_activity_evader" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
         </activity>
     </application>
 

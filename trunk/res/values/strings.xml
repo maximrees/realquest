@@ -8,6 +8,7 @@
     <string name="title_activity_scores">Scores</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_credits">Credits</string>
+    <string name="title_activity_evader">Evader</string>
     <string name="button_startcontinue">Start a Quest</string>
     <string name="title_activity_quest_loader">Select a Quest</string>
     <string name="button_scores">Scores</string>

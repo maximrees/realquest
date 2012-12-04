@@ -12,7 +12,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
+//import android.os.PowerManager.WakeLock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -37,7 +37,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 	private PowerManager mPowerManager;
 	private WindowManager mWindowManager;
 	private Display mDisplay;
-	private WakeLock mWakeLock;
+//	private WakeLock mWakeLock;
 	private float[] mSensorX;
 	private float[] mSensorY;
 	private long mSensorTimeStamp;
@@ -64,7 +64,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
-        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
+//        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
         
         initialiseVariables();
         
@@ -144,7 +144,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 			int height) {}
 
 	public void surfaceCreated(SurfaceHolder holder) {
-		mWakeLock.acquire();
+//		mWakeLock.acquire();
         mThread.setRunning(true);
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         if (!mThreadIsRunning){
@@ -157,7 +157,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 		boolean retry = true;
         mThread.setRunning(false);
         mSensorManager.unregisterListener(this);
-        mWakeLock.release();
+//        mWakeLock.release();
         while (retry) {
             try {
                 mThread.join();
@@ -347,11 +347,13 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 			while (mRun) {
             	try {
                     mCanvas = mSurfaceHolder.lockCanvas(null);
-                    synchronized (mSurfaceHolder) {
-                        if (mRunningMode == STATE_RUNNING){
-                        	updatePhysics();
-                        }
-                        doDraw(mCanvas);
+                    if (mCanvas != null) {
+	                    synchronized (mSurfaceHolder) {
+	                        if (mRunningMode == STATE_RUNNING){
+	                        	updatePhysics();
+	                        }
+	                        doDraw(mCanvas);
+	                    }
                     }
                 } finally {
                     if (mCanvas != null) {
