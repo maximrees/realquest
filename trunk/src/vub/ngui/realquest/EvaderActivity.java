@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
+import android.view.WindowManager;
 
 public class EvaderActivity extends Activity {
     
@@ -19,7 +20,8 @@ public class EvaderActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createSurfaceView(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);        
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
     
     @Override
