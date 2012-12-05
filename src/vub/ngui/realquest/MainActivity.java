@@ -3,6 +3,7 @@ package vub.ngui.realquest;
 import vub.ngui.realquest.R;
 import vub.ngui.realquest.R.layout;
 import vub.ngui.realquest.R.menu;
+import vub.ngui.realquest.model.Evader;
 import vub.ngui.realquest.model.Quest;
 import android.os.Bundle;
 import android.app.Activity;
@@ -57,7 +58,7 @@ public class MainActivity extends Activity {
     }
     
     public void startCredits(View v) {
-        Intent intent = new Intent(MainActivity.this, EvaderActivity.class);
+        Intent intent = new Intent(MainActivity.this, Evader.class);
         startActivity(intent);
     }
     
