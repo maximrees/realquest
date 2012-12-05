@@ -289,6 +289,10 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 			mListener=onCustomEventListener;
 		}
 		
+		public Activity getActivity() {
+			return mActivity;
+		}
+		
 		public int getAttempts() {
 			return attempts;
 		}

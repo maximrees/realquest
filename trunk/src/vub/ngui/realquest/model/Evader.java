@@ -2,6 +2,7 @@ package vub.ngui.realquest.model;
 
 import java.util.ArrayList;
 
+import vub.ngui.realquest.MiniGameActivity;
 import vub.ngui.realquest.R;
 import vub.ngui.realquest.R.id;
 import vub.ngui.realquest.R.layout;
@@ -35,13 +36,18 @@ public class Evader extends MiniGame {
 		minigameActivity.setContentView(R.layout.activity_evader);
 		minigameActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.MiniGameRelativeLayout);
-//		mGameView = (EvaderSurfaceView) findViewById(R.id.gameview);		
+		mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.MiniGameRelativeLayout);		
 		
         mGameThread = mGameView.getThread();
         mGameThread.setCustomEventListener(new OnCustomEventListener(){
             public void onEvent(){
             	score = mGameThread.getAttempts();
+            	MiniGameActivity parent = (MiniGameActivity) mGameThread.getActivity();
+            	if (score < 2) {
+            		parent.checkFailRoute(0);
+            	} else {
+            		parent.checkFailRoute(1);
+            	}
             }
             });
         mGameView.setPlayActivity(minigameActivity);
