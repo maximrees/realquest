@@ -5,12 +5,17 @@
 		<!-- <item name="android:textColor">@color/default_text_color</item> -->
 		<item name="android:buttonStyle">@style/btn_default_realquest</item>
 		<item name="android:actionBarStyle">@style/actionbar_realquest</item>
+		<item name="android:radioButtonStyle">@style/btn_radio_realquest</item>
 	</style>
 	
     <style name="btn_default_realquest" parent="android:style/Widget.Holo.Light.Button">
         <item name="android:background">@drawable/btn_default_realquest</item>
         <item name="android:textSize">18sp</item>
         <!-- <item name="android:textColor">@color/dark_green</item> -->
+    </style>
+    
+    <style name="btn_radio_realquest" parent="android:style/Widget.Holo.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/btn_radio_realquest</item>
     </style>
     
     <style name="actionbar_realquest" parent="android:style/Widget.Holo.ActionBar.Solid" />

@@ -6,20 +6,19 @@ import vub.ngui.realquest.model.Quest;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MiniGameActivity extends Activity {
 	
 	private Quest quest;
-	private LinearLayout parentLayout;
+	private RelativeLayout parentLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mini_game);
-		parentLayout = (LinearLayout) findViewById(R.id.MiniGameLinearLayout);
+		parentLayout = (RelativeLayout) findViewById(R.id.MiniGameRelativeLayout);
 		quest = MainActivity.getInstance().quest;
 		String klasse = quest.getMiniGameInfo().get(0).getClass().toString();		
 		//TODO: if i wanna do this properly i should just sent a listener with this function but yeh wutever

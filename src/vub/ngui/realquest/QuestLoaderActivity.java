@@ -64,7 +64,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
        
-        makeMockFile();
+        // makeMockFile();
         
         
         LoadQuestFiles();
