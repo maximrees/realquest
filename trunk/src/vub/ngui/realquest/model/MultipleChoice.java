@@ -57,7 +57,7 @@ public class MultipleChoice extends MiniGame  {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		ActionBar bar = minigameActivity.getActionBar();
-		bar.setTitle("   " + question + "?");
+		bar.setTitle("   " + question);
 		
 		
 		// TODO: listview met radiobuttons
@@ -87,6 +87,7 @@ public class MultipleChoice extends MiniGame  {
 					//that references to one of their failpaths, wether this int is valid should be checked by minigameactivityDONE
 					//and minigameactivity should implement setting the int in mainactivity DONE KINDOF
 					this.getActivity().checkFailRoute(Integer.parseInt(text.substring(0, 1))-1);//questions from 1- .. arrays from 0-...
+					this.getActivity().finish();
 				}			
 			}
 		});

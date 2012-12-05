@@ -107,36 +107,124 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     //how to make mock files:
     		//minigame multiple choice:
     			//questions and their diversion:
-    			Map<String, Diversion> map = new HashMap<String, Diversion>();
-    			Location loc = new Location(LocationManager.GPS_PROVIDER);
-    			loc.setLatitude(10.154929);
-    			loc.setLongitude(76.390316);
-    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 1000*60));
-    			//the correct answer contains the next minigame location as location and zero as timeout;
-    			loc = new Location(LocationManager.GPS_PROVIDER);
-    			loc.setLatitude(10.154929);
-    			loc.setLongitude(76.390316);
-    			map.put("to find the holy grail", new Diversion(loc, 0));
-    			loc = new Location(LocationManager.GPS_PROVIDER);
-    			loc.setLatitude(10.154929);
-    			loc.setLongitude(76.390316);
-    			map.put("ffffffffffffff", new Diversion(loc, 1000*60));
-    			loc = new Location(LocationManager.GPS_PROVIDER);
-    		loc.setLatitude(50.823329);
-    		loc.setLongitude(4.392747);
-    		MultipleChoice mini1 = new MultipleChoice(loc, "What is your quest?", map );
-    		
-    		ArrayList<Diversion> route = new ArrayList<Diversion>();
-    		route.add(new Diversion(loc, 0));
-    		route.add(new Diversion(loc, 1000*60));    		
-    		Evader mini2 = new Evader(loc, route);
-    		
-    	//put games in arraylist
-    	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
+		
+		Map<String, Diversion> map1 = new HashMap<String, Diversion>();
+		ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
+		
+		// 1ste minigame: multiple choice
+		// answer 1: incorrect - richting zwembad
+		Location loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.824115);
+		loc.setLongitude(4.394939);
+		map1.put("1834", new Diversion(loc, 60000));
+		
+		// answer 2: correct - info punt
+		//the correct answer contains the next minigame location as location and zero as timeout;
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821747);
+		loc.setLongitude(4.394877);
+		map1.put("1969", new Diversion(loc, 0));
+		
+		// answer 3: incorrect - etterbeek station
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822353);
+		loc.setLongitude(4.389725);
+		map1.put("1973:", new Diversion(loc, 20000));
+		
+		// question + gamelocation: sigaar vub	
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822882);
+		loc.setLongitude(4.392375);
+		MultipleChoice mini1 = new MultipleChoice(loc, "In what year was de VUB founded?", map1);
+		// put game in arraylist
+		listofgames.add(mini1);
+		
+		// 2nd minigame: evader
+		ArrayList<Diversion> map2 = new ArrayList<Diversion>();
+		
+		// evader succeed - resto
+		// first location for succeed
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821579);
+		loc.setLongitude(4.395921);
+		map2.add(new Diversion(loc, 0));
+		
+		// second for fail - campuskoten
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822448);
+		loc.setLongitude(4.395947);
+		map2.add(new Diversion(loc, 10000));
+		
+		// game + gamelocation: info punt
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821747);
+		loc.setLongitude(4.394877);
+		Evader mini2 = new Evader(loc, map2);
+    	//put game in arraylist
     	listofgames.add(mini2);
-    	listofgames.add(mini1);
+    	
+    	// 3th minigame: multiple choice
+		// answer 1: correct - science fac
+    	map1 = new HashMap<String, Diversion>();
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822126);
+		loc.setLongitude(4.396929);
+		map1.put("€ 4,80", new Diversion(loc, 0));
+		
+		// answer 2: incorrect - stoa
+		//the correct answer contains the next minigame location as location and zero as timeout;
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821991);
+		loc.setLongitude(4.396414);
+		map1.put("€ 4,65", new Diversion(loc, 20000));
+		
+		// answer 3: incorrect - sigaar
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822882);
+		loc.setLongitude(4.392375);
+		map1.put("€ 6,25", new Diversion(loc, 100000));
+		
+		// question + gamelocation: resto	
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821579);
+		loc.setLongitude(4.395921);
+		mini1 = new MultipleChoice(loc, "How much will a daymenu cost for a student?", map1);
+		// put game in arraylist
+		listofgames.add(mini1);
+		
+		// 4th minigame: multiple choice
+		// answer 1: incorrect - 
+    	map1 = new HashMap<String, Diversion>();
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822126);
+		loc.setLongitude(4.396929);
+		map1.put("€ 4,80", new Diversion(loc, 60000));
+		
+		// answer 2: incorrect - 
+		//the correct answer contains the next minigame location as location and zero as timeout;
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.821991);
+		loc.setLongitude(4.396414);
+		map1.put("€ 4,65", new Diversion(loc, 20000));
+		
+		// answer 3: correct - tent
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.820367);
+		loc.setLongitude(4.394478);
+		map1.put("€ 6,25", new Diversion(loc, 0));
+		
+		// question + gamelocation: science fac	
+		loc = new Location(LocationManager.GPS_PROVIDER);
+		loc.setLatitude(50.822126);
+		loc.setLongitude(4.396929);
+		mini1 = new MultipleChoice(loc, "How much will a daymenu cost for a student?", map1);
+		// put game in arraylist
+		listofgames.add(mini1);		
+    	
+    	
+    	
     	//put arraylist in quest        
-    	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames, 3*1000*60*10 );
+    	Quest quest = new Quest("VUB Quest", "A quest guiding you arround the VUB campus.", listofgames, 3*1000*60*10);
     	//save it
     	saver.Save(quest);		
 	}
