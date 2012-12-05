@@ -3,32 +3,22 @@ package vub.ngui.realquest.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import vub.ngui.realquest.MainActivity;
-import vub.ngui.realquest.MiniGameActivity;
 import vub.ngui.realquest.R;
-
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
-
-import com.google.android.maps.GeoPoint;
 
 public class MultipleChoice extends MiniGame implements Serializable {
 	
@@ -61,11 +51,23 @@ public class MultipleChoice extends MiniGame implements Serializable {
 
 	@Override
 	public void launchMinigame(Activity minigameActivity, ViewGroup view) {
+		LayoutInflater inflator = minigameActivity.getLayoutInflater();
+		
+		minigameActivity.getWindow().setFlags(
+				WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		ActionBar bar = minigameActivity.getActionBar();
+		bar.setTitle("   " + question + "?");
+		
+		
+		// TODO: listview met radiobuttons
 		parent = minigameActivity;
-		TextView questionView = new TextView(parent);
-		questionView.setText(question);
-		questionView.setGravity(Gravity.CENTER_HORIZONTAL);
-		view.addView(questionView);
+//		TextView questionView = new TextView(parent);
+//		questionView.setText(question);
+//		questionView.setGravity(Gravity.CENTER_HORIZONTAL);
+//		view.addView(questionView);
+
 		radgroup = new RadioGroup(parent);
 		int i = 1;
 		for( String key : answers.keySet()){
@@ -75,7 +77,9 @@ public class MultipleChoice extends MiniGame implements Serializable {
 			i++;
 		}
 		view.addView(radgroup);
+		
 		Button confirm = (Button) new Button(parent);
+		
 		confirm.setText(minigameActivity.getResources().getString(R.string.button_solve_multiple_choice));
 		confirm.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
@@ -91,14 +95,22 @@ public class MultipleChoice extends MiniGame implements Serializable {
 				}				
 			}
 		});
-		view.addView(confirm);	
+		
+		RelativeLayout buttonHolder = new RelativeLayout(minigameActivity);  
+        
+        RelativeLayout.LayoutParams params = new LayoutParams(
+        		RelativeLayout.LayoutParams.FILL_PARENT,  
+        		RelativeLayout.LayoutParams.FILL_PARENT);
+        buttonHolder.setLayoutParams(params); 
+        
+        RelativeLayout.LayoutParams b1 = new LayoutParams(  
+        		RelativeLayout.LayoutParams.FILL_PARENT,  
+        		RelativeLayout.LayoutParams.WRAP_CONTENT);
+        b1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        b1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        confirm.setLayoutParams(b1);
+        
+        buttonHolder.addView(confirm);
+		view.addView(buttonHolder);
 	}
-
-
-
-
-
-
-	
-
 }
