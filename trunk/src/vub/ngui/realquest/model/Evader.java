@@ -34,7 +34,7 @@ public class Evader extends MiniGame {
 		minigameActivity.setContentView(R.layout.activity_evader);
 		minigameActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		EvaderSurfaceView mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.MiniGameRelativeLayout);		
+		EvaderSurfaceView mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.gameview);		
 		
         EvaderThread mGameThread = mGameView.getThread();
         mGameThread.setCustomEventListener(new OnCustomEventListener(){

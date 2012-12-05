@@ -75,13 +75,6 @@
             android:name="vub.ngui.realquest.MiniGameActivity"
             android:label="@string/title_activity_mini_game" >
         </activity>
-        <activity
-            android:name="vub.ngui.realquest.Evader"
-            android:label="@string/title_activity_evader" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
-        </activity>
     </application>
 
 </manifest>
