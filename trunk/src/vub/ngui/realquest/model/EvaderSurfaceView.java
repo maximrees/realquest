@@ -1,6 +1,7 @@
-package vub.ngui.realquest.minigames;
+package vub.ngui.realquest.model;
 
 import java.util.Random;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +25,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class Evader extends SurfaceView implements SurfaceHolder.Callback,SensorEventListener  {
+public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Callback,SensorEventListener  {
 
 	private EvaderThread mThread;
 	private Context mContext;
@@ -54,7 +55,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 	private static final int MEDIUM_DPI_STATUS_BAR_HEIGHT = 25;
 	private static final int HIGH_DPI_STATUS_BAR_HEIGHT = 38;
 	
-	public Evader(Context context, AttributeSet attrs) {
+	public EvaderSurfaceView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		mContext = context;
@@ -243,6 +244,7 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 		private Handler mHandler;
         private Canvas mCanvas;
         private boolean mRun = false;
+        private OnCustomEventListener mListener;
          
         /**Variable and constants related to the state of the current game**/
         private int mRunningMode;
@@ -283,6 +285,18 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
             initialiseVariables();
         }
 		
+		public void setCustomEventListener(OnCustomEventListener onCustomEventListener) {
+			mListener=onCustomEventListener;
+		}
+		
+		public int getAttempts() {
+			return attempts;
+		}
+
+		public void setAttempts(int attempts) {
+			this.attempts = attempts;
+		}
+
 		private void initialiseVariables(){
 			
 			mRedCirclesCentreX = new float[10];
@@ -501,11 +515,11 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 				i += 1;
 			}
 			if (collisions >= maxCollisions) {
-				attempts++;
+				setAttempts(getAttempts() + 1);
 				initialiseVariables();
 				mActivity.runOnUiThread(new Runnable() {
 				    public void run() {
-				        Toast.makeText(mActivity, "Attempt " + attempts, Toast.LENGTH_SHORT).show();
+				        Toast.makeText(mActivity, "Attempt " + getAttempts(), Toast.LENGTH_SHORT).show();
 				    }
 				});
 			}
@@ -513,11 +527,9 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 		
 		private void checkTarget(){
 			if (mCircleCentreX > mScreenCentreX * 2 - mCircleRadius * 2 && mCircleCentreY > mScreenCentreY * 2 - mCircleRadius * 2){
-				// TODO: enter result
+				if(mListener!=null) mListener.onEvent();
 				mActivity.finish();
 			}
 		}
-		
 	}
-	
 }
