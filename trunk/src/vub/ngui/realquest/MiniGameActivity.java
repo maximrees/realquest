@@ -42,5 +42,6 @@ public class MiniGameActivity extends Activity {
 			MainActivity.getInstance().selection = index;
 		}
 	}
+	
 
 }
