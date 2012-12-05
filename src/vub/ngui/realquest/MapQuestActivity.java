@@ -101,7 +101,8 @@ public class MapQuestActivity extends MapActivity {
         
 
 		mapView = (MapView) findViewById(R.id.questMap);
-		//mocklocation testing mapView.setOnTouchListener(loctesting);
+		//mocklocation testing 
+		mapView.setOnTouchListener(loctesting);
 
 		mapController = mapView.getController();
 		
@@ -110,9 +111,9 @@ public class MapQuestActivity extends MapActivity {
 		if(MainActivity.getInstance().selection == -1 ){
 			// Acquire a reference to the system Location Manager
 			locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-			//locman.addTestProvider(LocationManager.GPS_PROVIDER, false, false,
-                   // false, false, true, true, true, 0, 5);
-			//locman.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+			locman.addTestProvider(LocationManager.GPS_PROVIDER, false, false,
+                    false, false, true, true, true, 0, 5);
+			locman.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
 			setupLocationManaging();
 			drawQuestToMap();
 		} else{

@@ -48,7 +48,6 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 	private static final String TITLE = "TITLE";
 	private static final String DESCRIPTION = "DESCRIPTION";
 	 
-	 //for yves : http://www.netmite.com/android/mydroid/frameworks/base/core/res/res/layout/
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,12 +112,15 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			loc.setLongitude(76.390316);
     			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 20));
     			//the correct answer contains the next minigame location as location and zero as timeout;
+    			loc = new Location(LocationManager.GPS_PROVIDER);
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
     			map.put("to find the holy grail", new Diversion(loc, 0));
+    			loc = new Location(LocationManager.GPS_PROVIDER);
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
     			map.put("ffffffffffffff", new Diversion(loc, 20));
+    			loc = new Location(LocationManager.GPS_PROVIDER);
     		loc.setLatitude(50.823329);
     		loc.setLongitude(4.392747);
     		MultipleChoice mini1 = new MultipleChoice(loc, "what is your quest", map );
