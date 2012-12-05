@@ -24,5 +24,6 @@
     <string name="title_activity_mini_game">MiniGameActivity</string>
     <string name="button_solve_multiple_choice">Answer the question.</string>
     <string name="confirm_button_no_radio_selected">Please select an Answer.</string>
+    <string name="title_activity_score">ScoreActivity</string>
 
 </resources>

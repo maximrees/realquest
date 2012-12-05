@@ -8,7 +8,7 @@
     </uses-permission>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-      <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> 
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -74,6 +74,10 @@
         <activity
             android:name="vub.ngui.realquest.MiniGameActivity"
             android:label="@string/title_activity_mini_game" >
+        </activity>
+        <activity
+            android:name="vub.ngui.realquest.ScoreActivity"
+            android:label="@string/title_activity_score" >
         </activity>
     </application>
 

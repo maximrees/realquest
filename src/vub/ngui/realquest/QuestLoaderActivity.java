@@ -111,7 +111,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			Location loc = new Location(LocationManager.GPS_PROVIDER);
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
-    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 20));
+    			map.put("Blue .... NO YELLOOOO...!!!", new Diversion(loc, 1000*60));
     			//the correct answer contains the next minigame location as location and zero as timeout;
     			loc = new Location(LocationManager.GPS_PROVIDER);
     			loc.setLatitude(10.154929);
@@ -120,7 +120,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			loc = new Location(LocationManager.GPS_PROVIDER);
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
-    			map.put("ffffffffffffff", new Diversion(loc, 20));
+    			map.put("ffffffffffffff", new Diversion(loc, 1000*60));
     			loc = new Location(LocationManager.GPS_PROVIDER);
     		loc.setLatitude(50.823329);
     		loc.setLongitude(4.392747);
@@ -128,7 +128,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     		
     		ArrayList<Diversion> route = new ArrayList<Diversion>();
     		route.add(new Diversion(loc, 0));
-    		route.add(new Diversion(loc, 20));    		
+    		route.add(new Diversion(loc, 1000*60));    		
     		Evader mini2 = new Evader(loc, route);
     		
     	//put games in arraylist
@@ -136,7 +136,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     	listofgames.add(mini2);
     	listofgames.add(mini1);
     	//put arraylist in quest        
-    	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames );
+    	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames, 3*1000*60*10 );
     	//save it
     	saver.Save(quest);		
 	}
