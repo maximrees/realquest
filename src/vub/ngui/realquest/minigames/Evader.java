@@ -495,6 +495,8 @@ public class Evader extends SurfaceView implements SurfaceHolder.Callback,Sensor
 				if ((centresDistanceSquared <= radiiDistanceSquared) && !mCollidedCircles[i]){
 					mCollidedCircles[i] = true;
 					collisions++;
+					
+					// TODO: maybe adding sound
 				}
 				i += 1;
 			}
