@@ -15,6 +15,7 @@ import android.view.WindowManager;
 public class MainActivity extends Activity {
 	
 	public Quest quest;
+	public int selection = -1;
 	private static MainActivity instance = null;
 	
 	public static MainActivity getInstance(){
@@ -31,6 +32,10 @@ public class MainActivity extends Activity {
         
         setContentView(R.layout.activity_main);
         instance = this;
+        
+        
+        
+        
 	}
 
     @Override
@@ -45,8 +50,9 @@ public class MainActivity extends Activity {
     }
     
     public void startScores(View v) {
-        Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
+    	Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
         startActivity(intent);
+        
     }
     
     public void startSettings(View v) {

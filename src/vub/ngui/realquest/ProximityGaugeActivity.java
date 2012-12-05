@@ -1,8 +1,15 @@
 package vub.ngui.realquest;
 
+import vub.ngui.realquest.model.MiniGame;
+import vub.ngui.realquest.model.Quest;
 import vub.ngui.realquest.proximitygauge.ProximityGauge;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,23 +20,29 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 public class ProximityGaugeActivity extends Activity {
+private LocationManager locman; 
+	private LocationListener loclis;
+	private Quest quest;
+	private MiniGame game;
 	ProximityGauge pg;
 	FrameLayout mainHolder;
 	RelativeLayout buttonHolder;
 	Button pgButton;
+	Activity myself;
 	
 	// variables for testing
 	private int current_proximity = 3;
-	private boolean test = true;
+	private boolean test = true;   
 	
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         float scale = getResources().getDisplayMetrics().density;
-        
+        myself = this;
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,8 +75,10 @@ public class ProximityGaugeActivity extends Activity {
         pgButton.setLayoutParams(b1);
         
         pgButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // TODO: Perform action on click
+            public void onClick(View v) {            	
+            	Intent intent = new Intent(ProximityGaugeActivity.this, MiniGameActivity.class);
+                startActivity(intent);
+                myself.finish();
             }
         });
         
@@ -71,6 +86,68 @@ public class ProximityGaugeActivity extends Activity {
         mainHolder.addView(buttonHolder);
         
         setContentView(mainHolder);
+        locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        quest =  MainActivity.getInstance().quest;
+        game = (MiniGame) quest.getMiniGameInfo().get(0);        
+        
+        loclis = new LocationListener() {
+
+		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+		    public void onProviderEnabled(String provider) {}
+
+		    public void onProviderDisabled(String provider) {
+		    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.provider_disabled), Toast.LENGTH_LONG).show();			    	
+		    }
+
+			public void onLocationChanged(android.location.Location location) {
+				
+					
+					Location dest = game.getLocation();
+					Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+					float distance = source.distanceTo(dest);
+					switch (Math.round(distance/11)) {
+					case 0: 
+						update(0);
+						locman.removeUpdates(loclis);
+						break;
+					case 1: 
+						update(0);		
+						locman.removeUpdates(loclis);
+						break;
+					case 2: 
+						update(1);						
+						break;
+					case 3: 
+						update(2);						
+						break;
+					case 4: 
+						update(3);						
+						break;
+					case 5: 
+						update(4);						
+						break;
+					case 6: 
+						update(5);						
+						break;
+					case 7: 
+						update(6);					
+						break;
+					case 8: 
+						update(7);						
+						break;
+					case 9: 
+						update(8);					
+						break;
+					case 10: 
+						update(9);					
+						break;
+					default: 
+						update(10);	
+						break;
+					}								
+			}
+		  };
     }
 
     @Override
@@ -91,6 +168,7 @@ public class ProximityGaugeActivity extends Activity {
     }
     
 	// testing the workings of the bars and button
+    /*
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {	    
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -112,7 +190,7 @@ public class ProximityGaugeActivity extends Activity {
         	update(current_proximity);
         }
         return true;
-	}
+	}*/
 	
 	private void update(int x) {
 			pgButton.setEnabled(pg.updateGauge(x));

@@ -3,6 +3,9 @@ package vub.ngui.realquest.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import vub.ngui.realquest.MainActivity;
+import vub.ngui.realquest.MiniGameActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -39,10 +42,27 @@ public abstract class MiniGame implements Serializable {
 		this.failureRoutes = fail;
 	}
 	//IMPORTANT NOTE:
+	//1
 	//i would like to make this method abstract because i want minigames to implement loading their own elements into the minigame layout
-	//alas making this abstract would mess with gson and id have to make modifications in the saver to account for this abstract class
-	//so im justn ot gunna do that and write this here that u need to enforce this overriding method in subclasses	
+	//sadly we have to screw around with gson to get inheritance into play when deserializing it from a minigame and casting it to the proper type
+	//2 
+	//and int must be returned for the map to see which failroute has been loaded, and the fact that it is returning from a minigame should be indicated
+	//(done by setting this int. sadly we cant just have launchminigame return an int, because the int that is returned probably depends on userinteraction
+	//with the minigame : ie multiplechoice: onclicklistener for the confirm button therefore TODO: a second obbligation overwrite a setint method see further
 	abstract public void launchMinigame(Activity minigameActivity, ViewGroup view);
+	/**
+	 * this method must be called in subclasses to make the map clear what to do next 
+	 * by returning afailroutearraylistindex after the minigame is over
+	 * @param failroutearraylistindex a valid index in the failroutes arraylist
+	 * @param parent the parent you have received from launchminigame
+	 * 
+	 */
+	 public void setFailRoute(int failroutearraylistindex, Activity parent){
+		 ((MiniGameActivity) parent).checkFailRoute(failroutearraylistindex);
+	 }
+
+	
+	
 	
 	
 //	public MiniGame(Parcel in) {
