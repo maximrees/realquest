@@ -14,7 +14,8 @@ public class Quest implements Serializable{
 	private static final long serialVersionUID = 4237081863152163539L;
 	private String title;
 	private String description;
-	private ArrayList<MiniGame> miniGameInfo; 
+	private ArrayList<MiniGame> miniGameInfo;
+	private long finishIn; 
 
 	public Quest(String title, String description) {
 		super();
@@ -22,11 +23,12 @@ public class Quest implements Serializable{
 		this.description = description;
 	}
 	public Quest(String title, String description,
-			ArrayList<MiniGame> arrayList) {
+			ArrayList<MiniGame> arrayList, long finishIn) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.miniGameInfo = arrayList;
+		this.finishIn = finishIn;
 	}
 	public ArrayList<MiniGame> getMiniGameInfo() {
 		return miniGameInfo;
@@ -69,6 +71,10 @@ public class Quest implements Serializable{
 //		this.description = in.readString();
 //		this.miniGameInfo = in.readArrayList(MiniGame.class.getClassLoader());
 //	}
+	public long getTime() {
+		// TODO Auto-generated method stub
+		return finishIn;
+	}
 
 
 }

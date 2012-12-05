@@ -3,8 +3,12 @@ package vub.ngui.realquest;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -73,6 +77,9 @@ public class MapQuestActivity extends MapActivity {
 	private MiniGamesItemizedOverlay itemizedoverlay;
 	private MyLocationOverlay myLocationOverlay;
 	
+	private long myTime = 0;
+	private boolean flagz = true;
+	
 	private OnTouchListener loctesting = new OnTouchListener() {
 		GeoPoint p;
 		public boolean onTouch(View v, MotionEvent event) {
@@ -88,48 +95,39 @@ public class MapQuestActivity extends MapActivity {
 			return false;
 		}
 	};
+	private int selection;
 	
-	private static int PROXIMITY_REQ_CODE = 551;
+	public static int PROXIMITY_REQ_CODE = 551;
+	
+	@Override
+	protected void onResume() {
+		callonResumeAndCreate();
+		super.onResume();
+	}
+
+	public static String QUEST_STARTING_TIME = "start";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    
         setContentView(R.layout.activity_map_quest);
+        if(flagz){
+        	myTime = System.currentTimeMillis();
+        	flagz = false;
+        }
         
 
 		mapView = (MapView) findViewById(R.id.questMap);
 		//mocklocation testing 
-		mapView.setOnTouchListener(loctesting);
+		//mapView.setOnTouchListener(loctesting);
 
 		mapController = mapView.getController();
 		
-		this.quest = MainActivity.getInstance().quest;
 		
-		if(MainActivity.getInstance().selection == -1 ){
-			// Acquire a reference to the system Location Manager
-			locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-			locman.addTestProvider(LocationManager.GPS_PROVIDER, false, false,
-                    false, false, true, true, true, 0, 5);
-			locman.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
-			setupLocationManaging();
-			drawQuestToMap();
-		} else{
-			drawMinigameToMap();
-			Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if( quest.getMiniGameInfo().get(0).getFailureRoutes().get(MainActivity.getInstance().selection).getTime() == 0 ){
-				//remove minigame and proceed to next
-				quest.getMiniGameInfo().remove(0);
-				setupLocationManaging();
-			} else{
-				//TODO: drawpath to next minigame and start timer
-				
-			}
-			
-			MainActivity.getInstance().selection = -1;
-		}
+		callonResumeAndCreate();
+
 		
 		
 		//following things need to happen:
@@ -140,21 +138,66 @@ public class MapQuestActivity extends MapActivity {
 		//load yves proximity activity (with minigame data, ...) launch the minigame from there DONE
 		//upon succes load the actual minigameactivity DONE
 		
-		//the minigame activity writes a new current minigame, which incase of failure to answer the question correctly 
+		//the minigame activity writes a new current minigame, which incase of failure to answer the question correctly  DONE KINDA
 		//is a new failminigame (remember the old minigame) to which the arrow or route will be generatedfor a specific number of time, after which
-		//the old minigame will be reloaded
+		//the old minigame will be reloaded DONE KIDNA
 		
-		//if it is answered correctly then we will remove the minigame from teh quest and load the next one (however the hasmap implementation allows us)
-		//fi there are no more minigames then weve played out the game and need to load scores
+		//if it is answered correctly then we will remove the minigame from teh quest and load the next one (however the hasmap implementation allows us) DONE
+		//fi there are no more minigames then weve played out the game and need to load scores DONE
 
-		
+		//call on resume and create in the onresume method DONE
 		
 		
 
 		
 }
 
-    private void setupLocationManaging() {
+    private void callonResumeAndCreate() {
+    	// Acquire a reference to the system Location Manager
+    	locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    	//locman.addTestProvider(LocationManager.GPS_PROVIDER, false, false,
+    	//      false, false, true, true, true, 0, 5);
+    	//locman.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);    	
+		this.quest = MainActivity.getInstance().quest;
+		this.selection = MainActivity.getInstance().selection;
+		
+		if( quest.getMiniGameInfo().isEmpty()){
+		    Intent intent = new Intent(MapQuestActivity.this, CreditsActivity.class);
+		    intent.putExtra(MapQuestActivity.QUEST_STARTING_TIME , this.myTime);
+	        startActivity(intent);
+		} else{		
+			MiniGame mini = quest.getMiniGameInfo().get(0); 			
+			if(selection == -1 ){			
+				setupLocationManaging();
+				drawQuestToMap();
+			} else{
+				drawMinigameToMap();
+				Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				Location dest = mini.getFailureRoutes().get(selection).getToPoint();
+				drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
+				if( mini.getFailureRoutes().get(selection).getTime() == 0 ){
+					//remove minigame and proceed to next
+					quest.getMiniGameInfo().remove(0);
+					setupLocationManaging();
+				} else{
+					//TODO: draw "fake completed minigame", drawpath to next minigame and start timer
+					MainActivity.getInstance().selection = -1;
+					Timer timy = new Timer();				
+					timy.schedule(new TimerTask() {					
+						@Override
+						public void run() {
+							Toast.makeText(getApplicationContext(), "You have failed the previous minigame and have been rerouted as punishment", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), "please return to previous minigame (see route) and complete it", Toast.LENGTH_LONG).show();
+							callonResumeAndCreate();						
+						}
+					}, new Date(System.currentTimeMillis()+mini.getFailureRoutes().get(selection).getTime())  );
+				}			
+				MainActivity.getInstance().selection = -1;
+			}		
+		}
+	}
+
+	private void setupLocationManaging() {
 		if(locman != null){
 			
 			// Define a listener that responds to location updates
@@ -170,14 +213,12 @@ public class MapQuestActivity extends MapActivity {
 			    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.provider_disabled), Toast.LENGTH_LONG).show();			    	
 			    }
 
-				public void onLocationChanged(android.location.Location location) {
-					
+				public void onLocationChanged(android.location.Location location) {					
 						MiniGame game = (MiniGame) quest.getMiniGameInfo().get(0);
 						Location dest = game.getLocation();
 						Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 						drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
-						locman.removeUpdates(loclis);
-									
+						locman.removeUpdates(loclis);									
 				}
 			  };
 
