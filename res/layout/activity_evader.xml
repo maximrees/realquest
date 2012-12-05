@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<vub.ngui.realquest.minigames.Evader
+<vub.ngui.realquest.model.EvaderSurfaceView
         android:id="@+id/gameview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
