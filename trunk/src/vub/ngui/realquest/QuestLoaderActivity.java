@@ -11,6 +11,7 @@ import com.google.android.maps.GeoPoint;
 
 import vub.ngui.realquest.model.Diversion;
 
+import vub.ngui.realquest.model.Evader;
 import vub.ngui.realquest.model.MiniGame;
 import vub.ngui.realquest.model.MultipleChoice;
 
@@ -124,9 +125,16 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     		loc.setLatitude(50.823329);
     		loc.setLongitude(4.392747);
     		MultipleChoice mini1 = new MultipleChoice(loc, "what is your quest", map );
+    		
+    		ArrayList<Diversion> route = new ArrayList<Diversion>();
+    		route.add(new Diversion(loc, 0));
+    		route.add(new Diversion(loc, 20));    		
+    		Evader mini2 = new Evader(loc, route);
+    		
     	//put games in arraylist
     	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
     	listofgames.add(mini1);
+    	listofgames.add(mini2);
     	//put arraylist in quest        
     	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames );
     	//save it
