@@ -48,8 +48,14 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.test.mock.MockContentProvider;
 import android.view.Menu;
+import android.view.View.OnTouchListener;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -66,6 +72,24 @@ public class MapQuestActivity extends MapActivity {
 	private LocationListener loclis = null;
 	private MiniGamesItemizedOverlay itemizedoverlay;
 	private MyLocationOverlay myLocationOverlay;
+	
+	private OnTouchListener loctesting = new OnTouchListener() {
+		GeoPoint p;
+		public boolean onTouch(View v, MotionEvent event) {
+			p = mapView.getProjection().fromPixels((int) event.getX(),
+                    (int) event.getY());			
+			Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
+			double latitude = p.getLatitudeE6() / 1E6;
+			double longitude = p.getLongitudeE6() / 1E6;
+			mockLocation.setLatitude(latitude);  // double 
+			mockLocation.setLongitude(longitude); 
+			mockLocation.setTime(System.currentTimeMillis()); 
+			locman.setTestProviderLocation( LocationManager.GPS_PROVIDER, mockLocation); 
+			return false;
+		}
+	};
+	
+	private static int PROXIMITY_REQ_CODE = 551;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,22 +99,45 @@ public class MapQuestActivity extends MapActivity {
     
         setContentView(R.layout.activity_map_quest);
         
-        /* Getting information concerning the child views */
+
 		mapView = (MapView) findViewById(R.id.questMap);
-		/* Initiate the map controls and display */
+		//mocklocation testing mapView.setOnTouchListener(loctesting);
+
 		mapController = mapView.getController();
 		
 		this.quest = MainActivity.getInstance().quest;
 		
-		setupLocationManaging();
+		if(MainActivity.getInstance().selection == -1 ){
+			// Acquire a reference to the system Location Manager
+			locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			//locman.addTestProvider(LocationManager.GPS_PROVIDER, false, false,
+                   // false, false, true, true, true, 0, 5);
+			//locman.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+			setupLocationManaging();
+			drawQuestToMap();
+		} else{
+			drawMinigameToMap();
+			Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if( quest.getMiniGameInfo().get(0).getFailureRoutes().get(MainActivity.getInstance().selection).getTime() == 0 ){
+				//remove minigame and proceed to next
+				quest.getMiniGameInfo().remove(0);
+				setupLocationManaging();
+			} else{
+				//TODO: drawpath to next minigame and start timer
+				
+			}
+			
+			MainActivity.getInstance().selection = -1;
+		}
+		
 		
 		//following things need to happen:
 		//generate the user' location (this needs to happen by registering to the incoming location update events) DONE
 		//and an arrow or a route needs to be generated to the next minigame location. DONE
 		//incoming location events check if close to current minigame NOT LOC EVENT BUT PROX INTENT DONE
 		
-		//load yves proximity activity (with minigame data, ...) launch the minigame from there
-		//upon succes load the actual minigameactivity
+		//load yves proximity activity (with minigame data, ...) launch the minigame from there DONE
+		//upon succes load the actual minigameactivity DONE
 		
 		//the minigame activity writes a new current minigame, which incase of failure to answer the question correctly 
 		//is a new failminigame (remember the old minigame) to which the arrow or route will be generatedfor a specific number of time, after which
@@ -100,18 +147,15 @@ public class MapQuestActivity extends MapActivity {
 		//fi there are no more minigames then weve played out the game and need to load scores
 
 		
-		drawQuestToMap();// !!!
-		//testing
-		//drawPathToMap(10.504956, 76.390316, 10.154929, 76.390376);
+		
+		
 
 		
 }
 
     private void setupLocationManaging() {
-		if(locman == null){
-			// Acquire a reference to the system Location Manager
-			locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
+		if(locman != null){
+			
 			// Define a listener that responds to location updates
 			// I'm only using this one so as to wait for a starting point from which to draw a path to the next minigame
 			// it would be more logical to do this in the oncreate but you need a starting point so ...
@@ -138,9 +182,10 @@ public class MapQuestActivity extends MapActivity {
 
 			// Register the listener with the Location Manager to receive location updates
 			locman.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclis);
-			//DEES WAS MIJN PLAN VOOR UW INTENT TE LAUNCHEN :p > als ge echt nen thread moet launchen dan zijt ge miss beter dat ge het custom doet in onlocationchanged
-			//maar dan moet ge wel terug ne flag zetten voor mijn code in onlocation changed and the removeupdates lijn verwijderen. want die code mag maar 1 keer runnen.
-			//locman.addProximityAlert(quest.getMiniGameInfo().get(0).getLocation().getLatitude(), quest.getMiniGameInfo().get(0).getLocation().getLatitude(), 100, -1, intent)
+			Intent intent = new Intent(MapQuestActivity.this, ProximityGaugeActivity.class);
+			float floaty = 110;
+			long longy = -1;
+			locman.addProximityAlert(quest.getMiniGameInfo().get(0).getLocation().getLatitude(), quest.getMiniGameInfo().get(0).getLocation().getLatitude(), floaty, longy, PendingIntent.getActivity(getApplicationContext(), MapQuestActivity.PROXIMITY_REQ_CODE, intent, Intent.FLAG_ACTIVITY_NEW_TASK));
 		}
 		
 	}

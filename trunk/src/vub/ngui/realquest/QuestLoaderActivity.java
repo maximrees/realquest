@@ -122,8 +122,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			loc.setLatitude(10.154929);
     			loc.setLongitude(76.390316);
     			map.put("ffffffffffffff", new Diversion(loc, 20));
-    		loc.setLatitude(10.154999);
-    		loc.setLongitude( 76.341867);
+    		loc.setLatitude(50.823329);
+    		loc.setLongitude(4.392747);
     		MultipleChoice mini1 = new MultipleChoice(loc, "what is your quest", map );
     	//put games in arraylist
     	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
