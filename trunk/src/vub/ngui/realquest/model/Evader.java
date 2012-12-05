@@ -30,7 +30,7 @@ public class Evader extends MiniGame {
 
 	@Override
 	public void launchMinigame(Activity minigameActivity, ViewGroup view) {
-		int result;
+		minigameActivity.getActionBar().hide();
 		minigameActivity.setContentView(R.layout.activity_evader);
 		minigameActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
