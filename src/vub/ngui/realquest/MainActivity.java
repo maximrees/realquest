@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     }
     
     public void startCredits(View v) {
-        Intent intent = new Intent(MainActivity.this, Evader.class);
+        Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
         startActivity(intent);
     }
     
