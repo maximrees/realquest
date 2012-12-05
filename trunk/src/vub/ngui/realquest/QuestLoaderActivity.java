@@ -44,12 +44,9 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 	//not sure if hell remember this might be a problem
 	private int state = 0;
 	private Map<String, Quest> questContainer = new HashMap<String,Quest>();
-	
-
-	
-	
-	 private static final String TITLE = "TITLE";
-	 private static final String DESCRIPTION = "DESCRIPTION";
+		
+	private static final String TITLE = "TITLE";
+	private static final String DESCRIPTION = "DESCRIPTION";
 	 
 	 //for yves : http://www.netmite.com/android/mydroid/frameworks/base/core/res/res/layout/
 
