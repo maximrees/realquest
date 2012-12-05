@@ -193,35 +193,33 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 		listofgames.add(mini1);
 		
 		// 4th minigame: multiple choice
-		// answer 1: incorrect - 
+		// answer 1: incorrect - den G
     	map1 = new HashMap<String, Diversion>();
 		loc = new Location(LocationManager.GPS_PROVIDER);
-		loc.setLatitude(50.822126);
-		loc.setLongitude(4.396929);
-		map1.put("€ 4,80", new Diversion(loc, 60000));
+		loc.setLatitude(50.822448);
+		loc.setLongitude(4.397165);
+		map1.put("13", new Diversion(loc, 40000));
 		
-		// answer 2: incorrect - 
+		// answer 2: incorrect - sportveld
 		//the correct answer contains the next minigame location as location and zero as timeout;
 		loc = new Location(LocationManager.GPS_PROVIDER);
-		loc.setLatitude(50.821991);
-		loc.setLongitude(4.396414);
-		map1.put("€ 4,65", new Diversion(loc, 20000));
+		loc.setLatitude(50.823926);
+		loc.setLongitude(4.394907);
+		map1.put("-1", new Diversion(loc, 60000));
 		
 		// answer 3: correct - tent
 		loc = new Location(LocationManager.GPS_PROVIDER);
 		loc.setLatitude(50.820367);
 		loc.setLongitude(4.394478);
-		map1.put("€ 6,25", new Diversion(loc, 0));
+		map1.put("10", new Diversion(loc, 0));
 		
 		// question + gamelocation: science fac	
 		loc = new Location(LocationManager.GPS_PROVIDER);
 		loc.setLatitude(50.822126);
 		loc.setLongitude(4.396929);
-		mini1 = new MultipleChoice(loc, "How much will a daymenu cost for a student?", map1);
+		mini1 = new MultipleChoice(loc, "On what flour resides the Computer Science Department?", map1);
 		// put game in arraylist
-		listofgames.add(mini1);		
-    	
-    	
+		listofgames.add(mini1);    	
     	
     	//put arraylist in quest        
     	Quest quest = new Quest("VUB Quest", "A quest guiding you arround the VUB campus.", listofgames, 3*1000*60*10);
