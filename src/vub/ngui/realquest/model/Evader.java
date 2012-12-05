@@ -20,8 +20,6 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class Evader extends MiniGame {
 
-	private EvaderThread mGameThread;
-	private EvaderSurfaceView mGameView;
 	private int score;
 	
 	public Evader(Location point, ArrayList<Diversion> fail) {
@@ -36,11 +34,11 @@ public class Evader extends MiniGame {
 		minigameActivity.setContentView(R.layout.activity_evader);
 		minigameActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.MiniGameRelativeLayout);		
+		EvaderSurfaceView mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.MiniGameRelativeLayout);		
 		
-        mGameThread = mGameView.getThread();
+        EvaderThread mGameThread = mGameView.getThread();
         mGameThread.setCustomEventListener(new OnCustomEventListener(){
-            public void onEvent(){
+            public void onEvent(EvaderThread mGameThread){
             	score = mGameThread.getAttempts();
             	MiniGameActivity parent = (MiniGameActivity) mGameThread.getActivity();
             	if (score < 2) {
@@ -52,47 +50,4 @@ public class Evader extends MiniGame {
             });
         mGameView.setPlayActivity(minigameActivity);
 	}
-	
-	
-	/** Called when the activity is first created. */
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//	
-//        createSurfaceView(savedInstanceState);
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  
-////        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//    }
-    
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//    }
-	
-//	@Override
-//    protected void onResume(){
-//    	super.onResume();
-//    }
-	
-//	private void createSurfaceView(Bundle savedInstanceState){
-//		setContentView(R.layout.activity_evader);
-//        
-//		mGameView = (EvaderSurfaceView) findViewById(R.id.gameview);
-//        mGameThread = mGameView.getThread();
-//        
-//        mGameView.setPlayActivity(this);
-//    }
-	
-//	@Override
-//    protected void onStop() {
-//        super.onStop();
-//    }
-	
-//	@Override
-//    protected void onRestart(){
-//    	super.onRestart();
-//    	createSurfaceView(null);
-//     }
-	
-	
 }

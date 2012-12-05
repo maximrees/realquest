@@ -124,7 +124,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     			loc = new Location(LocationManager.GPS_PROVIDER);
     		loc.setLatitude(50.823329);
     		loc.setLongitude(4.392747);
-    		MultipleChoice mini1 = new MultipleChoice(loc, "what is your quest", map );
+    		MultipleChoice mini1 = new MultipleChoice(loc, "What is your quest?", map );
     		
     		ArrayList<Diversion> route = new ArrayList<Diversion>();
     		route.add(new Diversion(loc, 0));
@@ -133,8 +133,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     		
     	//put games in arraylist
     	ArrayList<MiniGame> listofgames = new ArrayList<MiniGame>();
-    	listofgames.add(mini1);
     	listofgames.add(mini2);
+    	listofgames.add(mini1);
     	//put arraylist in quest        
     	Quest quest = new Quest("realquesttitle,hvcfghghf", "realquestdescriptionDUMB", listofgames );
     	//save it

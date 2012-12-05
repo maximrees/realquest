@@ -531,7 +531,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 		
 		private void checkTarget(){
 			if (mCircleCentreX > mScreenCentreX * 2 - mCircleRadius * 2 && mCircleCentreY > mScreenCentreY * 2 - mCircleRadius * 2){
-				if(mListener!=null) mListener.onEvent();
+				if(mListener!=null) mListener.onEvent(mThread);
 				mActivity.finish();
 			}
 		}

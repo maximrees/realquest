@@ -61,11 +61,6 @@ public class MultipleChoice extends MiniGame  {
 		
 		
 		// TODO: listview met radiobuttons
-		//parent = (MiniGameActivity) minigameActivity;
-//		TextView questionView = new TextView(parent);
-//		questionView.setText(question);
-//		questionView.setGravity(Gravity.CENTER_HORIZONTAL);
-//		view.addView(questionView);
 
 		RadioGroup radgroup = new RadioGroup(minigameActivity);
 		int i = 1;
