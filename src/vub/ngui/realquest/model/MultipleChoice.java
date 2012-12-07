@@ -1,6 +1,6 @@
 package vub.ngui.realquest.model;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,8 +50,6 @@ public class MultipleChoice extends MiniGame  {
 
 	@Override
 	public void launchMinigame(Activity minigameActivity, ViewGroup view) {
-		LayoutInflater inflator = minigameActivity.getLayoutInflater();
-		
 		minigameActivity.getWindow().setFlags(
 				WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
