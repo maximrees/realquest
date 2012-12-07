@@ -78,9 +78,15 @@ public class MapQuestActivity extends MapActivity {
 	private LocationListener loclis = null;
 	private MiniGamesItemizedOverlay itemizedoverlay;
 	private MyLocationOverlay myLocationOverlay;
+	private float miniGameproximityRadius = 110f;
+	private long lastUpdateTime = 0;
+	private long locationTimedOut = 2000;
 	
 	private long myTime = 0;
 	private boolean flagz = true;
+	private boolean inMiniGame = false;
+	
+	private Location lastUpdateLocation = null;;
 	
 	private OnTouchListener loctesting = new OnTouchListener() {
 		GeoPoint p;
@@ -98,6 +104,7 @@ public class MapQuestActivity extends MapActivity {
 		}
 	};
 	private int selection;
+
 	
 	public static int PROXIMITY_REQ_CODE = 551;
 	
@@ -129,7 +136,7 @@ public class MapQuestActivity extends MapActivity {
 		mapController = mapView.getController();
 		
 		
-		callonResumeAndCreate();
+		//callonResumeAndCreate();
 
 		
 		
@@ -165,18 +172,19 @@ public class MapQuestActivity extends MapActivity {
 		this.selection = MainActivity.getInstance().selection;
 		
 		if( quest.getMiniGameInfo().isEmpty()){
-		    Intent intent = new Intent(MapQuestActivity.this, CreditsActivity.class);
+		    Intent intent = new Intent(MapQuestActivity.this, ScoreActivity.class);
 		    intent.putExtra(MapQuestActivity.QUEST_STARTING_TIME , this.myTime);
 	        startActivity(intent);
 		} else{		
 			MiniGame mini = quest.getMiniGameInfo().get(0); 			
-			if(selection == -1 ){			
+			if(selection == -1 ){	
+				inMiniGame = false;
 				setupLocationManaging();
 				drawQuestToMap();
 			} else{
 				drawMinigameToMap();
-				Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				Location dest = mini.getFailureRoutes().get(selection).getToPoint();
+				Location source = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER );
+				Location dest = mini.getFailureRoutes().get(selection).getToPoint();	
 				drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
 				if( mini.getFailureRoutes().get(selection).getTime() == 0 ){
 					//remove minigame and proceed to next
@@ -184,7 +192,6 @@ public class MapQuestActivity extends MapActivity {
 					setupLocationManaging();
 				} else{
 					//TODO: draw "fake completed minigame", drawpath to next minigame and start timer
-					MainActivity.getInstance().selection = -1;
 					Timer timy = new Timer();				
 					timy.schedule(new TimerTask() {					
 						@Override
@@ -194,10 +201,11 @@ public class MapQuestActivity extends MapActivity {
 							callonResumeAndCreate();						
 						}
 					}, new Date(System.currentTimeMillis()+mini.getFailureRoutes().get(selection).getTime())  );
-				}			
-				MainActivity.getInstance().selection = -1;
+				}	
+				
 			}		
 		}
+		MainActivity.getInstance().selection = -1;
 	}
 
 	private void setupLocationManaging() {
@@ -216,31 +224,33 @@ public class MapQuestActivity extends MapActivity {
 			    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.provider_disabled), Toast.LENGTH_LONG).show();			    	
 			    }
 
-				public void onLocationChanged(android.location.Location location) {					
+				public void onLocationChanged(android.location.Location source) {	
+					long timepassed = System.currentTimeMillis() - lastUpdateTime;
+					if( timepassed > locationTimedOut && !inMiniGame ){
 						MiniGame game = (MiniGame) quest.getMiniGameInfo().get(0);
 						Location dest = game.getLocation();
-						Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-						drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
-						locman.removeUpdates(loclis);									
+						if(lastUpdateLocation == null){
+							lastUpdateLocation = source;
+							drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());	
+						} else{
+							if(source.getLatitude() != lastUpdateLocation.getLatitude() || source.getLongitude() != lastUpdateLocation.getLongitude() ){
+								lastUpdateLocation = source;
+								drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());	
+								if(source.distanceTo(dest) <= miniGameproximityRadius ){
+									inMiniGame = true;
+									Intent intent = new Intent(MapQuestActivity.this, ProximityGaugeActivity.class);
+									intent.putExtra("title", quest.getTitle());
+									startActivity(intent);
+								}
+							}	
+						}
+					} 
+					lastUpdateTime = System.currentTimeMillis();
 				}
 			  };
 
 			// Register the listener with the Location Manager to receive location updates
-			locman.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclis);
-			Intent intent = new Intent(MapQuestActivity.this, ProximityGaugeActivity.class);
-			intent.putExtra("title", quest.getTitle());
-			float floaty = 110;
-			long longy = -1;
-			locman.addProximityAlert(
-					quest.getMiniGameInfo().get(0).getLocation().getLatitude(), 
-					quest.getMiniGameInfo().get(0).getLocation().getLatitude(),
-					floaty,
-					longy,
-					PendingIntent.getActivity(
-							getApplicationContext(),
-							MapQuestActivity.PROXIMITY_REQ_CODE,
-							intent,
-							Intent.FLAG_ACTIVITY_NEW_TASK));
+			locman.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, loclis);
 		}
 		
 	}
@@ -250,6 +260,7 @@ public class MapQuestActivity extends MapActivity {
     	 MapController mc = mapView.getController();
     	 class DirectionDownloader extends AsyncTask<Double, Void, ArrayList<GeoPoint>> {
     		    // Do the long-running work in here
+    			
     		    protected ArrayList<GeoPoint> doInBackground(Double... coordinates) {
     		        try { 
     		        	
@@ -291,12 +302,13 @@ public class MapQuestActivity extends MapActivity {
     		    }
     		    @Override
     		    protected void onPostExecute(ArrayList<GeoPoint> result) {
-    		    	super.onPostExecute(result);
+    		    	super.onPostExecute(result);    		    	
     		    	mapView.getOverlays().add(new DirectionPathOverlay(result));
     		    	mapView.invalidate();
     		    }
     	 }
     	 new DirectionDownloader().execute(Double.valueOf(lat), Double.valueOf(lon),Double.valueOf(lat2),Double.valueOf(lon2));
+    	
 
 
     }

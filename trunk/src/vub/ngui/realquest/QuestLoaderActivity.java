@@ -61,8 +61,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
        
-//        makeMockFile();
-//        yvesMockFile();
+       makeMockFile();
+       //yvesMockFile();
         
         
         LoadQuestFiles();
@@ -134,8 +134,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 		
 		// question + gamelocation: sigaar vub	
 		loc = new Location(LocationManager.GPS_PROVIDER);
-		loc.setLatitude(50.822882);
-		loc.setLongitude(4.392375);
+		loc.setLatitude(50.821587);
+		loc.setLongitude(4.395334);
 		MultipleChoice mini1 = new MultipleChoice(loc, "In what year was de VUB founded?", map1);
 		// put game in arraylist
 		listofgames.add(mini1);
