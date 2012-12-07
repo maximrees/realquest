@@ -25,6 +25,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	private SoundPool _soundPool;
 	private int _preferredHeight = 484;
 	private int _preferredWidth = 347;
+	private int prev;
 
 	public ProximityGauge(Context context) {
 		super(context);
@@ -55,6 +56,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	    _pgthread.setRunning(false);
 	    while (retry) {
 	        try {
+	        	recycleBitmaps();
 	            _pgthread.join();
 	            retry = false;
 	        } catch (InterruptedException e) {
@@ -63,6 +65,12 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	    }
 	}
     
+	private void recycleBitmaps() {
+		for (int i = 0; i < gauge.length; i++) {
+			gauge[i].recycle();
+		}
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		int height = getMeasuredHeight();
@@ -177,8 +185,12 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		gaugeImages_enabled[9] = R.drawable.bar_10_enabled;
 		
 		gauge = new Bitmap[10];
-		// Initially gauge is set to 3
-		updateGauge(3);
+		
+		for (int i = 0; i < gauge.length; i++) {
+			gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
+		}
+		
+		prev = 0;
 	}
 	
 	private void drawIMG(Canvas canvas, Bitmap img, int x, int y) {
@@ -189,7 +201,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	public boolean updateGauge(int x) {
 		if (x <= gauge.length) {
 			iterateParts(x);
-			playSound(x);
+//			playSound(x);
 		}
 		if (x == gauge.length) {
 			return true;
@@ -199,13 +211,18 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	}
 	
 	private void iterateParts(int x) {
-		for (int i = 0; i < gauge.length; i++) {
-			if (i < x) { // set enabled to x, else disabled
+		if (x > prev) {
+			for (int i = prev; i < x; i++) {
 				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_enabled[i]);
-			} else {
+				playSound(i+1);
+			}
+		} else if (x < prev) {
+			for (int i = prev - 1; i >= x; i--) {
 				gauge[i] = BitmapFactory.decodeResource(getResources(), gaugeImages_disabled[i]);
+				playSound(i);
 			}
 		}
+		prev = x;
 	}
 	
 	private void playSound(int x) {
