@@ -35,7 +35,7 @@ private LocationManager locman;
 	Activity myself;
 	
 	// variables for testing
-	private int current_proximity = 3;
+	private int current_proximity = 9;
 	private boolean test = true;   
 	
 	@Override

@@ -253,9 +253,13 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 			map2.add(new Diversion(loc, 10000));
 			
 			// game + gamelocation: yves thuis
+//			loc = new Location(LocationManager.GPS_PROVIDER);
+//			loc.setLatitude(50.827382);
+//			loc.setLongitude(4.402084);
+			// campus e gedoe
 			loc = new Location(LocationManager.GPS_PROVIDER);
-			loc.setLatitude(50.827382);
-			loc.setLongitude(4.402084);
+			loc.setLatitude(50.8214432);
+			loc.setLongitude(4.396134);
 			Evader mini2 = new Evader(loc, map2);
 	    	//put game in arraylist
 	    	listofgames.add(mini2);
