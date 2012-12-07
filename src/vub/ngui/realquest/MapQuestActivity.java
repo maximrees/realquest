@@ -55,6 +55,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.test.mock.MockContentProvider;
 import android.view.Menu;
 import android.view.View.OnTouchListener;
@@ -111,7 +112,7 @@ public class MapQuestActivity extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    
         setContentView(R.layout.activity_map_quest);
         if(flagz){
         	myTime = System.currentTimeMillis();
@@ -225,15 +226,25 @@ public class MapQuestActivity extends MapActivity {
 			// Register the listener with the Location Manager to receive location updates
 			locman.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclis);
 			Intent intent = new Intent(MapQuestActivity.this, ProximityGaugeActivity.class);
+			intent.putExtra("title", quest.getTitle());
 			float floaty = 110;
 			long longy = -1;
-			locman.addProximityAlert(quest.getMiniGameInfo().get(0).getLocation().getLatitude(), quest.getMiniGameInfo().get(0).getLocation().getLatitude(), floaty, longy, PendingIntent.getActivity(getApplicationContext(), MapQuestActivity.PROXIMITY_REQ_CODE, intent, Intent.FLAG_ACTIVITY_NEW_TASK));
+			locman.addProximityAlert(
+					quest.getMiniGameInfo().get(0).getLocation().getLatitude(), 
+					quest.getMiniGameInfo().get(0).getLocation().getLatitude(),
+					floaty,
+					longy,
+					PendingIntent.getActivity(
+							getApplicationContext(),
+							MapQuestActivity.PROXIMITY_REQ_CODE,
+							intent,
+							Intent.FLAG_ACTIVITY_NEW_TASK));
 		}
 		
 	}
     
     private void drawPathToMap(double lat, double lon, double lat2, double lon2){
-    	 mapController.setZoom(10);
+//    	 mapController.setZoom(10);
     	 MapController mc = mapView.getController();
     	 class DirectionDownloader extends AsyncTask<Double, Void, ArrayList<GeoPoint>> {
     		    // Do the long-running work in here
@@ -302,9 +313,13 @@ public class MapQuestActivity extends MapActivity {
 		myLocationOverlay = new MyLocationOverlay(this, mapView);
 		mapView.getOverlays().add(myLocationOverlay);
 		myLocationOverlay.enableMyLocation();
-		myLocationOverlay.runOnFirstFix(new Runnable() { public void run() {
-		    mapView.getController().animateTo(myLocationOverlay.getMyLocation());
-		}});
+			myLocationOverlay.runOnFirstFix(new Runnable() { public void run() {
+				try {
+					mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+				} catch (NullPointerException exc) {
+//					Toast.makeText(getApplicationContext(), "Searching current location...", Toast.LENGTH_SHORT).show();
+				}
+			}});
 		//overlay to display minigames
 		Drawable minigame = this.getResources().getDrawable(android.R.drawable.star_on);
 		minigame.setBounds(0, 0, minigame.getIntrinsicWidth(), minigame.getIntrinsicHeight());

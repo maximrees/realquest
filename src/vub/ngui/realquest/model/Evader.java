@@ -33,6 +33,8 @@ public class Evader extends MiniGame {
 		minigameActivity.getActionBar().hide();
 		minigameActivity.setContentView(R.layout.activity_evader);
 		minigameActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		minigameActivity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		minigameActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		EvaderSurfaceView mGameView = (EvaderSurfaceView) minigameActivity.findViewById(R.id.gameview);		
 		

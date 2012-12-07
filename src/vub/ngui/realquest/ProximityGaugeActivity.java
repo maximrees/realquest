@@ -44,6 +44,8 @@ private LocationManager locman;
         float scale = getResources().getDisplayMetrics().density;
         myself = this;
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Intent intent = getIntent();
+        this.setTitle(intent.getStringExtra("title"));
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // getActionBar().setDisplayHomeAsUpEnabled(true);
         
@@ -168,7 +170,6 @@ private LocationManager locman;
     }
     
 	// testing the workings of the bars and button
-    /*
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {	    
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -190,7 +191,7 @@ private LocationManager locman;
         	update(current_proximity);
         }
         return true;
-	}*/
+	}
 	
 	private void update(int x) {
 			pgButton.setEnabled(pg.updateGauge(x));

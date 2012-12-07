@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
     }
     
     public void startSettings(View v) {
-        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(MainActivity.this, ProximityGaugeActivity.class);
         startActivity(intent);
     }
     
