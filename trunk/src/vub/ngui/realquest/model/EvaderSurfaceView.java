@@ -42,7 +42,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	private PowerManager mPowerManager;
 	private WindowManager mWindowManager;
 	private Display mDisplay;
-	private WakeLock mWakeLock;
+//	private WakeLock mWakeLock;
 	private float[] mSensorX;
 	private float[] mSensorY;
 	private long mSensorTimeStamp;
@@ -69,7 +69,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
-        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
+//        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
         
         initialiseVariables();
         
@@ -136,7 +136,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 			int height) {}
 
 	public void surfaceCreated(SurfaceHolder holder) {
-		mWakeLock.acquire();
+//		mWakeLock.acquire();
         mThread.setRunning(true);
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         if (!mThreadIsRunning){
@@ -149,7 +149,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 		boolean retry = true;
         mThread.setRunning(false);
         mSensorManager.unregisterListener(this);
-        mWakeLock.release();
+//        mWakeLock.release();
         while (retry) {
             try {
                 mThread.join();
