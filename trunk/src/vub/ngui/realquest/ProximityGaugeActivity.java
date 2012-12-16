@@ -24,15 +24,15 @@ import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 public class ProximityGaugeActivity extends Activity {
-private LocationManager locman; 
+	private LocationManager	locman;
 	private LocationListener loclis;
 	private Quest quest;
 	private MiniGame game;
-	ProximityGauge pg;
-	FrameLayout mainHolder;
-	RelativeLayout buttonHolder;
-	Button pgButton;
-	Activity myself;
+	private ProximityGauge pg;
+	private FrameLayout mainHolder;
+	private RelativeLayout buttonHolder;
+	private Button pgButton;
+	private Activity myself;
 	
 	// variables for testing
 	private int current_proximity = 9;
@@ -42,18 +42,16 @@ private LocationManager locman;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         float scale = getResources().getDisplayMetrics().density;
-        myself = this;
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         Intent intent = getIntent();
-        this.setTitle(intent.getStringExtra("title"));
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // getActionBar().setDisplayHomeAsUpEnabled(true);
+        myself = this;
+        
+        myself.setTitle(intent.getStringExtra("title"));
         
         pg = new ProximityGauge(this);
         mainHolder = new FrameLayout(this);
         buttonHolder = new RelativeLayout(this);       
         pgButton = new Button(this);
-        pgButton.setText("MiniGame");
+        pgButton.setText(R.string.button_proximity_gauge);
         pgButton.setId(123456);
         pgButton.setBackgroundResource(R.drawable.btn_proximity_gauge);
         pgButton.setEnabled(false);
@@ -71,8 +69,7 @@ private LocationManager locman;
         b1.addRule(RelativeLayout.CENTER_HORIZONTAL);
         b1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         
-        // TODO: not relative to screendensity yet...
-        int margin = 135;
+        int margin = (int) (45 * scale);
         b1.setMargins(0, 0, 0, margin);
         pgButton.setLayoutParams(b1);
         
@@ -93,21 +90,21 @@ private LocationManager locman;
         game = (MiniGame) quest.getMiniGameInfo().get(0);        
         
         loclis = new LocationListener() {
-
 		    public void onStatusChanged(String provider, int status, Bundle extras) {}
-
 		    public void onProviderEnabled(String provider) {}
-
+		    
 		    public void onProviderDisabled(String provider) {
-		    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.provider_disabled), Toast.LENGTH_LONG).show();			    	
+		    	Toast.makeText(
+		    			getApplicationContext(),
+		    			getResources().getString(R.string.provider_disabled),
+		    			Toast.LENGTH_LONG).show();			    	
 		    }
 
 			public void onLocationChanged(android.location.Location location) {
-				
-					
 					Location dest = game.getLocation();
 					Location source = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 					float distance = source.distanceTo(dest);
+					
 					switch (Math.round(distance/11)) {
 					case 0: 
 						update(0);
@@ -158,7 +155,6 @@ private LocationManager locman;
         return true;
     }
 
-    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -168,6 +164,10 @@ private LocationManager locman;
         }
         return super.onOptionsItemSelected(item);
     }
+    
+	private void update(int x) {
+		pgButton.setEnabled(pg.updateGauge(x));
+	}
     
 	// testing the workings of the bars and button
 	@Override
@@ -191,9 +191,5 @@ private LocationManager locman;
         	update(current_proximity);
         }
         return true;
-	}
-	
-	private void update(int x) {
-			pgButton.setEnabled(pg.updateGauge(x));
 	}
 }

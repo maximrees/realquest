@@ -61,8 +61,8 @@ public class QuestLoaderActivity extends ExpandableListActivity {
         startQuest.setOnClickListener(startQuestListener);
         saver = new FileSaver(getApplicationContext());        
        
-       makeMockFile();
-       //yvesMockFile();
+//       makeMockFile1();
+//       makeMockFile2();
         
         
         LoadQuestFiles();
@@ -104,7 +104,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 		
 	}
 
-	private void makeMockFile() {
+	private void makeMockFile1() {
     //how to make mock files:
     		//minigame multiple choice:
     			//questions and their diversion:
@@ -228,7 +228,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
     	saver.Save(quest);		
 	}
 	
-	private void yvesMockFile() {
+	private void makeMockFile2() {
 	    //how to make mock files:
 	    		//minigame multiple choice:
 	    			//questions and their diversion:
@@ -252,11 +252,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 			loc.setLongitude(4.395947);
 			map2.add(new Diversion(loc, 10000));
 			
-			// game + gamelocation: yves thuis
-//			loc = new Location(LocationManager.GPS_PROVIDER);
-//			loc.setLatitude(50.827382);
-//			loc.setLongitude(4.402084);
-			// campus e gedoe
+			// game + gamelocation: campus e gebouw
 			loc = new Location(LocationManager.GPS_PROVIDER);
 			loc.setLatitude(50.8214432);
 			loc.setLongitude(4.396134);
@@ -323,7 +319,7 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 			listofgames.add(mini1);    	
 	    	
 	    	//put arraylist in quest        
-	    	Quest quest = new Quest("Yves Quest", "A quest guiding you arround the VUB campus.", listofgames, 3*1000*60*10);
+	    	Quest quest = new Quest("Another Quest", "A quest guiding you arround the VUB campus.", listofgames, 3*1000*60*10);
 	    	//save it
 	    	saver.Save(quest);		
 		}
@@ -359,19 +355,14 @@ public class QuestLoaderActivity extends ExpandableListActivity {
 	}
 	
 	private OnClickListener startQuestListener = new OnClickListener() {
-		
 		public void onClick(View v) {			
 			//food for thought: if quests get unusually big, we might not wanna load save all of them, might wanna save title and description and only load a full quest when we need it
 			String string = (String) ((HashMap) questAdapter.getGroup(state)).get(TITLE);
 			MainActivity.getInstance().quest = questContainer.get(string);
 			//TODO:close this activity, remember teh quest and load the quest activity from the main menu, not from here (we want backpress from map to go to main menu, not this activity and we want to relaunch this activity then from mian menu if necessary/desireable)
 			Intent intent = new Intent(QuestLoaderActivity.this, MapQuestActivity.class);
-			
+			intent.putExtra("title", string);
 		    startActivity(intent);
 		}
-	};
-	
-	
-
-    
+	};   
 }

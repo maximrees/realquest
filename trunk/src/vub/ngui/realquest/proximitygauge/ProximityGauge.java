@@ -16,6 +16,9 @@ import android.view.SurfaceView;
 public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callback {
 	
 	final float scale = getResources().getDisplayMetrics().density;
+	final int _preferredHeight = 484;
+	final int _preferredWidth = 347;
+	
 	private ProximityGaugeThread _pgthread;
 	private Paint paint = new Paint();
 	private Bitmap[] gauge;
@@ -23,9 +26,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 	private int[] gaugeImages_disabled;
 	private int[] gaugeSounds;
 	private SoundPool _soundPool;
-	private int _preferredHeight = 484;
-	private int _preferredWidth = 347;
-	private int prev;
+	private	int prev;
 
 	public ProximityGauge(Context context) {
 		super(context);
@@ -141,6 +142,7 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		getHolder().addCallback(this);
 		_pgthread = new ProximityGaugeThread(getHolder(), this);
 		setFocusable(true);
+		
 		initDrawingTools();
 	}
 	
@@ -197,11 +199,14 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 		canvas.drawBitmap(img, x, y, paint);
 	}
 	
+	private void playSound(int x) {
+		_soundPool.play(gaugeSounds[x], 0.1f, 0.1f, 0, 0, 1);
+	}
+	
 	// setting the correct amount of bars
 	public boolean updateGauge(int x) {
 		if (x <= gauge.length) {
 			iterateParts(x);
-//			playSound(x);
 		}
 		if (x == gauge.length) {
 			return true;
@@ -223,9 +228,5 @@ public class ProximityGauge extends SurfaceView implements SurfaceHolder.Callbac
 			}
 		}
 		prev = x;
-	}
-	
-	private void playSound(int x) {
-		_soundPool.play(gaugeSounds[x], 1, 1, 0, 0, 1);
 	}
 }

@@ -119,7 +119,10 @@ public class MapQuestActivity extends MapActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        Intent intent = getIntent();
+        this.setTitle(intent.getStringExtra("title"));
+//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_map_quest);
@@ -145,7 +148,7 @@ public class MapQuestActivity extends MapActivity {
 		//and an arrow or a route needs to be generated to the next minigame location. DONE
 		//incoming location events check if close to current minigame NOT LOC EVENT BUT PROX INTENT DONE
 		
-		//load yves proximity activity (with minigame data, ...) launch the minigame from there DONE
+		//load proximity activity (with minigame data, ...) launch the minigame from there DONE
 		//upon succes load the actual minigameactivity DONE
 		
 		//the minigame activity writes a new current minigame, which incase of failure to answer the question correctly  DONE KINDA
@@ -234,13 +237,14 @@ public class MapQuestActivity extends MapActivity {
 							drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());	
 						} else{
 							if(source.getLatitude() != lastUpdateLocation.getLatitude() || source.getLongitude() != lastUpdateLocation.getLongitude() ){
-								lastUpdateLocation = source;
-								drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());	
+								lastUpdateLocation = source;	
 								if(source.distanceTo(dest) <= miniGameproximityRadius ){
 									inMiniGame = true;
 									Intent intent = new Intent(MapQuestActivity.this, ProximityGaugeActivity.class);
 									intent.putExtra("title", quest.getTitle());
 									startActivity(intent);
+								} else {
+									drawPathToMap(source.getLatitude(), source.getLongitude(), dest.getLatitude(), dest.getLongitude());
 								}
 							}	
 						}
@@ -342,96 +346,6 @@ public class MapQuestActivity extends MapActivity {
 		OverlayItem overlayitem = new OverlayItem(new GeoPoint(-80074222,13359375), "QUIT TOUCHING ME", "sob ^^");
 		itemizedoverlay.addOverlay(overlayitem);
 		mapView.getOverlays().add(itemizedoverlay);
-	
-		
-		
-		
-		//int i = 0;
-//		while( itr.hasNext()){
-//			Protocol proto = itr.next();
-//			try {
-//				addresses = geo.getFromLocation((double) (proto.getLatitude()/1E6), (double) (proto.getLongitude()/1E6), 1);
-//			} catch (IOException e) {
-//				Logger.getInstance().error("io exception geo .getfromlocation tabmap activity)");
-//			}
-//			GeoPoint p = new GeoPoint(
-//		            (int) proto.getLatitude(), 
-//		            (int) proto.getLongitude());
-//			OverlayItem objective;
-//			String info = res.getString(R.string.objective) + " " +(proto.getDone()? res.getString(R.string.handled) : res.getString(R.string.unhandled));
-//			String constraints = res.getString(R.string.constraints) + "\n\n" + res.getString(R.string.months_info) + " " + proto.getMonths() + "\n" + res.getString(R.string.days_info)+ " " + proto.getDays() + "\n" + res.getString(R.string.location_info) + "\n" + res.getString(R.string.address) +  ": " + addresses.get(0).getAddressLine(0) + "\n" + res.getString(R.string.city) + ": " + addresses.get(0).getAddressLine(1)  ;
-//			//i here should be the number of the protocol in the array, so we can retrieve protocoldata in the onclick
-//			objective	 = new OverlayItem(p, i + ". " + info,  proto.getDone()? "" : constraints  );
-//			objective.setMarker( proto.getDone()? redmarker : greenmarker);
-//			itemizedoverlay.addOverlay(objective);
-//			i++;			
-//		}
-		//overlay to display a done minigame
-				
-		
-		
-
-//		int minLon = Integer.MAX_VALUE;	
-//		int minLat = Integer.MAX_VALUE;
-//		while( itr.hasNext() ){	
-//			Protocol temp = (Protocol) itr.next();
-//			int lati = (int) temp.getLatitude();
-//			int longi = (int) temp.getLongitude();
-//			if( lati < minLat ) minLat = lati;
-//			if( longi < minLon ) minLon = longi;
-//			
-//		}
-//		itr = protocols.iterator();
-//		int maxLon = Integer.MIN_VALUE;	
-//		int maxLat = Integer.MIN_VALUE;
-//		while( itr.hasNext() ){	
-//			Protocol temp = (Protocol) itr.next();
-//			int lati = (int) temp.getLatitude();
-//			int longi = (int) temp.getLongitude();
-//			if( lati > maxLat ) maxLat = lati;
-//			if( longi > maxLon ) maxLon = longi;
-//		}
-//		mapView.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
-//	   mapView.getController().animateTo(new GeoPoint( ((maxLat+minLat)/2) , ((maxLon+minLon)/2) ));
-//
-
-
-
-//		ZoomControls zoomControls = (ZoomControls) findViewById(R.id.zoomcontrols);
-//		zoomControls.setOnZoomInClickListener(
-//				new View.OnClickListener() {
-//					public void onClick(View v) {
-//						mapController.zoomIn();
-//					}
-//				});
-//		zoomControls.setOnZoomOutClickListener(
-//				new View.OnClickListener() {
-//					public void onClick(View v) {
-//						mapController.zoomOut();
-//					}
-//				});
-
-		//Zoom controls in right-bottom corner:
-		//mapView.setBuiltInZoomControls(true);
-		/*
-		ZoomButtonsController zbc = mapView.getZoomButtonsController();
-		ViewGroup container = zbc.getContainer();
-		for(int i = 0; i < container.getChildCount(); i++)
-		{
-			View child = container.getChildAt(i);
-			if (child instanceof ZoomControls)
-			{
-				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) child.getLayoutParams();
-				lp.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-				child.requestLayout();
-				break;
-			} 
-		}
-		 */
-		//TODO fix bug which makes zoom in/out buttons appear under instead of next to each other
-
-		//Add points for measurements that are already in the track
-		
 	}
 	
 	private void drawMinigameToMap(){		
@@ -442,7 +356,6 @@ public class MapQuestActivity extends MapActivity {
 		OverlayItem overlayitem = new OverlayItem(point, "completed minigame", "");
 		itemizedoverlay.addOverlay(overlayitem);
 		mapView.invalidate();
-
 	}
 	
 	
@@ -455,7 +368,6 @@ public class MapQuestActivity extends MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
