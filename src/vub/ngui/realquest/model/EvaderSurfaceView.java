@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 //import android.os.PowerManager.WakeLock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -41,7 +42,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	private PowerManager mPowerManager;
 	private WindowManager mWindowManager;
 	private Display mDisplay;
-//	private WakeLock mWakeLock;
+	private WakeLock mWakeLock;
 	private float[] mSensorX;
 	private float[] mSensorY;
 	private long mSensorTimeStamp;
@@ -68,7 +69,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
-//        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
+        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
         
         initialiseVariables();
         
@@ -121,34 +122,21 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
         }
         
         mSensorX = new float[10];
-        mSensorX[0] = 0f;
-        mSensorX[1] = 0f;
-        mSensorX[2] = 0f;
-        mSensorX[3] = 0f;
-        mSensorX[4] = 0f;
-        mSensorX[5] = 0f;
-        mSensorX[6] = 0f;
-        mSensorX[7] = 0f;
-        mSensorX[8] = 0f;
-        mSensorX[9] = 0f;
+        for (int i = 0; i < mSensorX.length; i++) {
+			mSensorX[i] = 0f;
+		}
+        
         mSensorY = new float[10];
-        mSensorY[0] = 0f;
-        mSensorY[1] = 0f;
-        mSensorY[2] = 0f;
-        mSensorY[3] = 0f;
-        mSensorY[4] = 0f;
-        mSensorY[5] = 0f;
-        mSensorY[6] = 0f;
-        mSensorY[7] = 0f;
-        mSensorY[8] = 0f;
-        mSensorY[9] = 0f;
+        for (int i = 0; i < mSensorX.length; i++) {
+			mSensorY[i] = 0f;
+		}
     }
 	
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {}
 
 	public void surfaceCreated(SurfaceHolder holder) {
-//		mWakeLock.acquire();
+		mWakeLock.acquire();
         mThread.setRunning(true);
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         if (!mThreadIsRunning){
@@ -161,7 +149,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 		boolean retry = true;
         mThread.setRunning(false);
         mSensorManager.unregisterListener(this);
-//        mWakeLock.release();
+        mWakeLock.release();
         while (retry) {
             try {
                 mThread.join();
@@ -332,33 +320,11 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	        for (int i = 0; i < mRedCirclesRadii.length; i++) {
 				mRedCirclesRadii[i] = getRandomFloat(5.5f, 25f, random) * mScreenRatio;
 			}
-			
-//	        mRedCirclesRadii[0] = 15f * mScreenRatio;
-//	        mRedCirclesRadii[1] = 16.5f * mScreenRatio;
-//	        mRedCirclesRadii[2] = 16f * mScreenRatio;
-//	        mRedCirclesRadii[3] = 26f * mScreenRatio;
-//	        mRedCirclesRadii[4] = 12.1f * mScreenRatio;
-//	        mRedCirclesRadii[5] = 5.5f * mScreenRatio;
-//	        mRedCirclesRadii[6] = 12f * mScreenRatio;
-//	        mRedCirclesRadii[7] = 25f * mScreenRatio;
-//	        mRedCirclesRadii[8] = 10f * mScreenRatio;
-//	        mRedCirclesRadii[9] = 8f * mScreenRatio;
 	        
 	        mRedCirclesXVariation = new float[10];
 	        for (int i = 0; i < mRedCirclesXVariation.length; i++) {
 	        	mRedCirclesXVariation[i] = getRandomFloat(-10f, 10f, random);
 			}
-	        
-//	        mRedCirclesXVariation[0] = -1f;
-//	        mRedCirclesXVariation[1] = -1.5f;
-//	        mRedCirclesXVariation[2] = -2f;
-//	        mRedCirclesXVariation[3] = -3f;
-//	        mRedCirclesXVariation[4] = -1f;
-//	        mRedCirclesXVariation[5] = -2f;
-//	        mRedCirclesXVariation[6] = -1.5f;
-//	        mRedCirclesXVariation[7] = 2.5f;
-//	        mRedCirclesXVariation[8] = -4f;
-//	        mRedCirclesXVariation[9] = -1.1f;
 	        
 	        mCircleCentreX = mCircleRadius;
 	        mCircleCentreY = mCircleRadius;
@@ -366,16 +332,9 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	        collisions = 0;
 	        
 	        mCollidedCircles = new boolean[10];
-	        mCollidedCircles[0] = false;
-	        mCollidedCircles[1] = false;
-	        mCollidedCircles[2] = false;
-	        mCollidedCircles[3] = false;
-	        mCollidedCircles[4] = false;
-	        mCollidedCircles[5] = false;
-	        mCollidedCircles[6] = false;
-	        mCollidedCircles[7] = false;
-	        mCollidedCircles[8] = false;
-	        mCollidedCircles[9] = false;
+	        for (int i = 0; i < mCollidedCircles.length; i++) {
+				mCollidedCircles[i] = false;
+			}
 	     }
 			
 		private float getRandomFloat(float aStart, float aEnd, Random aRandom){
@@ -513,8 +472,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 				if ((centresDistanceSquared <= radiiDistanceSquared) && !mCollidedCircles[i]){
 					mCollidedCircles[i] = true;
 					collisions++;
-					
-					// TODO: maybe adding sound
+					// TODO: maybe adding a sound
 				}
 				i += 1;
 			}
@@ -532,6 +490,7 @@ public class EvaderSurfaceView extends SurfaceView implements SurfaceHolder.Call
 		private void checkTarget(){
 			if (mCircleCentreX > mScreenCentreX * 2 - mCircleRadius * 2 && mCircleCentreY > mScreenCentreY * 2 - mCircleRadius * 2){
 				if(mListener!=null) mListener.onEvent(mThread);
+				// TODO: maybe adding a sound for finishing the game
 				mActivity.finish();
 			}
 		}
